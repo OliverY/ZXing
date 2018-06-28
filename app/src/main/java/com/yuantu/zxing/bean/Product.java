@@ -1,4 +1,4 @@
-package com.yuantu.zxing;
+package com.yuantu.zxing.bean;
 
 import java.util.ArrayList;
 import java.util.List;

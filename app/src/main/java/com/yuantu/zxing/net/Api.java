@@ -1,16 +1,8 @@
 package com.yuantu.zxing.net;
 
 import com.google.gson.Gson;
-import com.yuantu.zxing.Product;
-import com.yuantu.zxing.net.bean.ApiResponse;
-import com.yuantu.zxing.net.bean.ProductBean;
+import com.yuantu.zxing.bean.Product;
 import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.Callback;
-import com.zhy.http.okhttp.callback.StringCallback;
-
-import okhttp3.Call;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 /**
  * Author:  Yxj
@@ -36,6 +28,11 @@ public class Api {
                 });
     }
 
+    /**
+     * 绑定
+     * @param product
+     * @param callback
+     */
     public static void bind(Product product,ApiCallback callback){
         Gson gson = new Gson();
         String json = gson.toJson(product);
@@ -43,6 +40,21 @@ public class Api {
                 .post()
                 .url("")
                 .addParams("productBindRequest",json)
+                .build()
+                .execute(callback);
+    }
+
+    /**
+     * 登录
+     * @param email
+     * @param password
+     * @param callback
+     */
+    public static void login(String email,String password,ApiCallback callback){
+//        /user/login?email=&password=
+        OkHttpUtils
+                .get()
+                .url("")
                 .build()
                 .execute(callback);
     }

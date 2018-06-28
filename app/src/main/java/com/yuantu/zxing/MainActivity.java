@@ -18,7 +18,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.tbruyelle.rxpermissions2.RxPermissions;
-import com.yuantu.zxing.adapter.MyAdapter;
+import com.yuantu.zxing.adapter.ProductAdapter;
+import com.yuantu.zxing.bean.Product;
 import com.yuantu.zxing.net.Api;
 import com.yuantu.zxing.net.ApiCallback;
 import com.yuantu.zxing.net.ObjectCallback;
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button btnMainScan;
     private Button btnAppendixScan;
     private Button btnSubmit;
-    private MyAdapter adapter;
+    private ProductAdapter adapter;
 
     // 代表扫码的入口
     private static final int SCAN_MAIN = 1;
@@ -73,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ry = findViewById(R.id.ry);
 
         ry.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        adapter = new MyAdapter();
+        adapter = new ProductAdapter();
         adapter.setOnItemClickListener((BaseQuickAdapter adapter, View view, int position) -> {
             new AlertDialog.Builder(MainActivity.this)
                     .setTitle("是否删除该原料")

@@ -10,9 +10,9 @@ import com.yuantu.zxing.R;
  * -----------------------------------------
  * Description:
  */
-public class MyAdapter extends BaseQuickAdapter<String,BaseViewHolder> {
+public class ProductAdapter extends BaseQuickAdapter<String,BaseViewHolder> {
 
-    public MyAdapter() {
+    public ProductAdapter() {
         super(R.layout.item_appendix);
     }
 
