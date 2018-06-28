@@ -42,4 +42,6 @@ dependencies {
     // BaseRecyclerViewAdapterHelper
     implementation 'com.android.support:recyclerview-v7:26.1.0'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
+
+    implementation 'com.google.code.gson:gson:2.8.5'
 }

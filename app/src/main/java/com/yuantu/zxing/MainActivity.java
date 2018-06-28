@@ -19,11 +19,21 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.yuantu.zxing.adapter.MyAdapter;
+import com.yuantu.zxing.net.Api;
+import com.yuantu.zxing.net.ApiCallback;
+import com.yuantu.zxing.net.ObjectCallback;
+import com.yuantu.zxing.net.bean.ApiResponse;
+import com.yuantu.zxing.net.bean.ProductBean;
+import com.yuantu.zxing.utils.ToastUtils;
 
 import java.util.ArrayList;
 
 import io.reactivex.functions.Consumer;
+import okhttp3.Call;
 
+/**
+ * 记得改写成clean mvp
+ */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView tvMain;
@@ -116,6 +126,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_submit:
                 // map提交
+                Api.bind(product, new ApiCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        ToastUtils.showShort(MainActivity.this,e.getMessage());
+                    }
+
+                    @Override
+                    public void onResponse(ApiResponse response, int id) {
+                        if(response.isSuccess()){
+                            ToastUtils.showShort(MainActivity.this,"绑定成功");
+                        }else {
+                            ToastUtils.showShort(MainActivity.this,"绑定失败");
+                        }
+                    }
+                });
 
                 break;
         }
@@ -137,15 +162,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (scanIndex == SCAN_MAIN) {
                     product.main = scanResult;
                     product.appendix = new ArrayList<>();
+                    // 查询网络
+                    getProductInfo(scanResult);
+
                 } else if (scanIndex == SCAN_APPENDIX) {
                     product.appendix.add(scanResult);
                     adapter.setNewData(product.appendix);
+                    checkBtnEnable();
                 }
-                checkBtnEnable();
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    private void getProductInfo(String scanResult) {
+        Api.query(scanResult, new ObjectCallback.Callback<ProductBean>() {
+            @Override
+            public void onResponse(ProductBean productBean) {
+//                StringBuilder sb = new StringBuilder();
+//                sb.append(productBean);
+                tvMain.setText(productBean.toString());
+                checkBtnEnable();
+            }
+
+            @Override
+            public void onError(String msg) {
+                ToastUtils.showShort(MainActivity.this,msg);
+            }
+        });
     }
 
     private void checkBtnEnable() {
