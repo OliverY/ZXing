@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void checkAppendixScanEnable() {
-        btnAppendixScan.setEnabled(TextUtils.isEmpty(product.main));
+        btnAppendixScan.setEnabled(!TextUtils.isEmpty(product.main));
     }
 
     private void checkSubmitEnable() {
