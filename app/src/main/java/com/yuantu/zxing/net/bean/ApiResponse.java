@@ -1,7 +1,5 @@
 package com.yuantu.zxing.net.bean;
 
-import java.util.List;
-
 /**
  * Author:  Yxj
  * Time:    2018/6/28 下午1:49

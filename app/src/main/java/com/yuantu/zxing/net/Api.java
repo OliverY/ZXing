@@ -9,6 +9,7 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import okhttp3.Call;
+import okhttp3.MediaType;
 
 /**
  * Author:  Yxj
@@ -43,9 +44,10 @@ public class Api {
         Log.e("yxj","json="+json);
 
         OkHttpUtils
-                .post()
+                .postString()
                 .url(url)
-                .addParams("productBindRequest",json)
+                .content(json)
+                .mediaType(MediaType.parse("application/json; charset=utf-8"))
                 .build()
                 .execute(callback);
     }

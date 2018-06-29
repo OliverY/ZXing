@@ -10,7 +10,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,13 +64,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         product = new Product();
 
-        product.main = "1-06b-003-20180629-055";
-        /*
-        1-06b-003-20180629-056
-        1-06b-003-20180629-057
-         */
-        product.appendix.add("1-06b-003-20180629-056");
-        product.appendix.add("1-06b-003-20180629-057");
+//        product.main = "1-06b-003-20180629-055";
+//        product.appendix.add("1-06b-003-20180629-056");
+//        product.appendix.add("1-06b-003-20180629-057");
 
         initview();
         requestPermission();
@@ -98,6 +97,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 dialog.dismiss();
             }).show();
         });
+        TextView emptyView = new TextView(this);
+        emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        emptyView.setGravity(Gravity.CENTER);
+        emptyView.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
+        emptyView.setText("暂未添加原料");
+        adapter.bindToRecyclerView(ry);
+        adapter.setEmptyView(emptyView);
         ry.setAdapter(adapter);
 
         btnAppendixScan.setEnabled(false);

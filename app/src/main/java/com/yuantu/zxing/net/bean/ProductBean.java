@@ -226,8 +226,8 @@ public class ProductBean {
     @Override
     public String toString() {
         return "产品简介" + "\r\n" +
-                "id\t" + id +"\r\n" +
-                "创建时间\t" + createDate + "\r\n" +
+                "产品id\t" + id +"\r\n" +
+                "入库时间\t" + createDate + "\r\n" +
                 "产品名称\t" + deviceTypeName +"\r\n" +
                 "区域\t" + areaName +"\r\n" +
                 "医院\t" + hospitalName +"\r\n";

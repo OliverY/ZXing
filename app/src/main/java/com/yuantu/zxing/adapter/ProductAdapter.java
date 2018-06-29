@@ -19,5 +19,6 @@ public class ProductAdapter extends BaseQuickAdapter<String,BaseViewHolder> {
     @Override
     protected void convert(BaseViewHolder helper, String item) {
         helper.setText(R.id.tv,item);
+        helper.getView(R.id.tv).setBackground(mContext.getResources().getDrawable(helper.getLayoutPosition()%2==0?R.drawable.bg_item_even:R.drawable.bg_item_odd));
     }
 }
