@@ -8,7 +8,7 @@ import java.util.List;
  * -----------------------------------------
  * Description:
  */
-public class ApiResponse {
+public class ApiResponse<T> {
     /**
      * success : true
      * msg : 操作成功
@@ -17,7 +17,7 @@ public class ApiResponse {
 
     private boolean success;
     private String msg;
-    private String data;
+    private T data;
 
     public boolean isSuccess() {
         return success;
@@ -35,11 +35,11 @@ public class ApiResponse {
         this.msg = msg;
     }
 
-    public String getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(T data) {
         this.data = data;
     }
 }

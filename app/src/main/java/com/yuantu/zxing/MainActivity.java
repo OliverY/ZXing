@@ -9,23 +9,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.yuantu.zxing.adapter.ProductAdapter;
 import com.yuantu.zxing.bean.Product;
 import com.yuantu.zxing.net.Api;
-import com.yuantu.zxing.net.ApiCallback;
-import com.yuantu.zxing.net.ObjectCallback;
-import com.yuantu.zxing.net.bean.ApiResponse;
 import com.yuantu.zxing.net.bean.ProductBean;
 import com.yuantu.zxing.utils.ToastUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -113,10 +116,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.btn_main_scan:
                 scanIndex = SCAN_MAIN;
-                new IntentIntegrator(this)
-                        .setOrientationLocked(false)
-                        .setCaptureActivity(ScanActivity.class)
-                        .initiateScan();
+                getProductInfo("1-06b-003-20180629-055");
+
+//                new IntentIntegrator(this)
+//                        .setOrientationLocked(false)
+//                        .setCaptureActivity(ScanActivity.class)
+//                        .initiateScan();
                 break;
             case R.id.btn_appendix_scan:
                 scanIndex = SCAN_APPENDIX;
@@ -127,18 +132,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_submit:
                 // map提交
-                Api.bind(product, new ApiCallback() {
+                Api.bind(product, new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         ToastUtils.showShort(MainActivity.this,e.getMessage());
                     }
 
                     @Override
-                    public void onResponse(ApiResponse response, int id) {
-                        if(response.isSuccess()){
-                            ToastUtils.showShort(MainActivity.this,"绑定成功");
-                        }else {
-                            ToastUtils.showShort(MainActivity.this,"绑定失败");
+                    public void onResponse(String response, int id) {
+                        try {
+                            JSONObject responseJson = new JSONObject(response);
+                            boolean isSuccess = responseJson.getBoolean("success");
+                            if(isSuccess){
+                                ToastUtils.showShort(MainActivity.this,"绑定成功");
+                            }else{
+                                ToastUtils.showShort(MainActivity.this,responseJson.getString("msg"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            ToastUtils.showShort(MainActivity.this,e.getMessage());
                         }
                     }
                 });
@@ -160,6 +172,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // ScanResult 为 获取到的字符串
                 String scanResult = intentResult.getContents();
 
+                Log.e("yxj","扫码成功::"+scanResult);
+
                 if (scanIndex == SCAN_MAIN) {
                     product.main = scanResult;
                     product.appendix = new ArrayList<>();
@@ -178,18 +192,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void getProductInfo(String scanResult) {
-        Api.query(scanResult, new ObjectCallback.Callback<ProductBean>() {
+
+        Api.query(scanResult, new StringCallback() {
             @Override
-            public void onResponse(ProductBean productBean) {
-//                StringBuilder sb = new StringBuilder();
-//                sb.append(productBean);
-                tvMain.setText(productBean.toString());
-                checkBtnEnable();
+            public void onError(Call call, Exception e, int id) {
+                ToastUtils.showShort(MainActivity.this,e.getMessage());
             }
 
             @Override
-            public void onError(String msg) {
-                ToastUtils.showShort(MainActivity.this,msg);
+            public void onResponse(String response, int id) {
+                try {
+                    JSONObject responseJson = new JSONObject(response);
+                    boolean isSuccess = responseJson.getBoolean("success");
+                    if(isSuccess){
+                        String objStr = responseJson.getString("data");
+                        Gson gson = new Gson();
+                        ProductBean productBean = gson.fromJson(objStr,ProductBean.class);
+                        tvMain.setText(productBean.toString());
+
+                        product.main = productBean.getBarcode();
+                        checkBtnEnable();
+                    }else{
+                        ToastUtils.showShort(MainActivity.this,responseJson.getString("msg"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    ToastUtils.showShort(MainActivity.this,e.getMessage());
+                }
             }
         });
     }

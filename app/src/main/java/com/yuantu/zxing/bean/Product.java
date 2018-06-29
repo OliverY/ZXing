@@ -1,5 +1,7 @@
 package com.yuantu.zxing.bean;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +13,9 @@ import java.util.List;
  */
 public class Product {
 
+    @SerializedName("product_barcode")
     public String main;
+    @SerializedName("material_barcodes")
     public List<String> appendix = new ArrayList<>();
 
     public Product() {

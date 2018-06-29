@@ -1,8 +1,14 @@
 package com.yuantu.zxing.net;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.yuantu.zxing.bean.Product;
+import com.yuantu.zxing.net.bean.ApiResponse;
 import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import okhttp3.Call;
 
 /**
  * Author:  Yxj
@@ -12,20 +18,16 @@ import com.zhy.http.okhttp.OkHttpUtils;
  */
 public class Api {
 
-    public static <T> void query(String id,ObjectCallback.Callback<T> callback){
-//        "http://ngrok.yuantutech.com:65000/jszx/"
+    private static final String BASE_URL = "http://ngrok.yuantutech.com:65000/jszx";
 
+    public static void query(String id,StringCallback callback){
+        String url = BASE_URL+"/product/query";
         OkHttpUtils
                 .get()
-                .url("product/query?barcode=1-001-002-20180627-001")
+                .url(url)
                 .addParams("barcode",id)
                 .build()
-                .execute(new ObjectCallback(){
-                    @Override
-                    public Callback getCallback() {
-                        return callback;
-                    }
-                });
+                .execute(callback);
     }
 
     /**
@@ -33,12 +35,16 @@ public class Api {
      * @param product
      * @param callback
      */
-    public static void bind(Product product,ApiCallback callback){
+    public static void bind(Product product,StringCallback callback){
+        String url = BASE_URL+"/product/bind";
         Gson gson = new Gson();
         String json = gson.toJson(product);
+
+        Log.e("yxj","json="+json);
+
         OkHttpUtils
                 .post()
-                .url("")
+                .url(url)
                 .addParams("productBindRequest",json)
                 .build()
                 .execute(callback);

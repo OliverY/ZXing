@@ -4,10 +4,13 @@ package com.yuantu.zxing.net;
 import android.util.Log;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
+import okio.Buffer;
+import okio.BufferedSource;
 
 /**
  * Author:  Yxj
@@ -21,13 +24,14 @@ public class LoggingInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {
-        long t1 = System.nanoTime();
         Request request = chain.request();
-        Log.i(TAG,String.format("request:: %s on %s%n%s", request.url(),chain.connection(),request.headers()));
-
+        Log.i("yxj", "request::"+request.url().toString());
         Response response = chain.proceed(request);
-        long t2 = System.nanoTime();
-        Log.i(TAG,String.format("response:: %s in %.1fms%n%s", request.url(),(t2-t1)/1e6d,request.headers()));
+
+        BufferedSource source = response.body().source();
+        source.request(Long.MAX_VALUE);
+        Buffer buffer = source.buffer();
+        Log.i("yxj", "response::" + buffer.clone().readString(Charset.forName("UTF-8")));
 
         return response;
     }

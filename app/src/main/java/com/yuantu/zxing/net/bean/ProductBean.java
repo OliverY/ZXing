@@ -8,39 +8,40 @@ package com.yuantu.zxing.net.bean;
  */
 public class ProductBean {
 
+
     /**
      * createBy : 93
-     * createDate : 2018-06-26 21:14:33
+     * createDate : 2018-06-28 23:35:43
      * updateBy : null
-     * updateDate : 2018-06-26 21:14:33
-     * delFlag : 0
-     * id : 237
-     * barcode : 1-001-002-20180627-001
-     * name : 自助机
-     * model : 1
-     * deviceTypeId : 1
-     * deviceTypeName : 自助机
+     * updateDate : 2018-06-28 23:35:43
+     * deleted : false
+     * id : 12
+     * barcode : 1-06b-003-20180629-055
+     * name : null
+     * model : null
+     * deviceTypeId : 107
+     * deviceTypeName : YT-DT550
      * hospitalId : 9
      * parentId : 0
-     * recievingId : 96
-     * inventoryId : 87
-     * produced : false
-     * troubleCount : 0
-     * areaId : 1
+     * recievingId : 3
+     * inventoryId : 3
+     * produced : true
+     * troubleCount : null
+     * areaId : null
      * areaName : 华北大区
-     * hospitalName : null
-     * modelName : ABC
+     * hospitalName : 监控监控
+     * modelName : null
      */
 
     private int createBy;
     private String createDate;
     private Object updateBy;
     private String updateDate;
-    private String delFlag;
+    private boolean deleted;
     private int id;
     private String barcode;
-    private String name;
-    private String model;
+    private Object name;
+    private Object model;
     private int deviceTypeId;
     private String deviceTypeName;
     private int hospitalId;
@@ -48,11 +49,11 @@ public class ProductBean {
     private int recievingId;
     private int inventoryId;
     private boolean produced;
-    private int troubleCount;
-    private int areaId;
+    private Object troubleCount;
+    private Object areaId;
     private String areaName;
-    private Object hospitalName;
-    private String modelName;
+    private String hospitalName;
+    private Object modelName;
 
     public int getCreateBy() {
         return createBy;
@@ -86,12 +87,12 @@ public class ProductBean {
         this.updateDate = updateDate;
     }
 
-    public String getDelFlag() {
-        return delFlag;
+    public boolean isDeleted() {
+        return deleted;
     }
 
-    public void setDelFlag(String delFlag) {
-        this.delFlag = delFlag;
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     public int getId() {
@@ -110,19 +111,19 @@ public class ProductBean {
         this.barcode = barcode;
     }
 
-    public String getName() {
+    public Object getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(Object name) {
         this.name = name;
     }
 
-    public String getModel() {
+    public Object getModel() {
         return model;
     }
 
-    public void setModel(String model) {
+    public void setModel(Object model) {
         this.model = model;
     }
 
@@ -182,19 +183,19 @@ public class ProductBean {
         this.produced = produced;
     }
 
-    public int getTroubleCount() {
+    public Object getTroubleCount() {
         return troubleCount;
     }
 
-    public void setTroubleCount(int troubleCount) {
+    public void setTroubleCount(Object troubleCount) {
         this.troubleCount = troubleCount;
     }
 
-    public int getAreaId() {
+    public Object getAreaId() {
         return areaId;
     }
 
-    public void setAreaId(int areaId) {
+    public void setAreaId(Object areaId) {
         this.areaId = areaId;
     }
 
@@ -206,19 +207,19 @@ public class ProductBean {
         this.areaName = areaName;
     }
 
-    public Object getHospitalName() {
+    public String getHospitalName() {
         return hospitalName;
     }
 
-    public void setHospitalName(Object hospitalName) {
+    public void setHospitalName(String hospitalName) {
         this.hospitalName = hospitalName;
     }
 
-    public String getModelName() {
+    public Object getModelName() {
         return modelName;
     }
 
-    public void setModelName(String modelName) {
+    public void setModelName(Object modelName) {
         this.modelName = modelName;
     }
 
