@@ -36,4 +36,7 @@ public class Product {
     public void setAppendix(List<String> appendix) {
         this.appendix = appendix;
     }
+
+
+
 }

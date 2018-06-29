@@ -61,6 +61,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         product = new Product();
 
+        product.main = "1-06b-003-20180629-055";
+        /*
+        1-06b-003-20180629-056
+        1-06b-003-20180629-057
+         */
+        product.appendix.add("1-06b-003-20180629-056");
+        product.appendix.add("1-06b-003-20180629-057");
+
         initview();
         requestPermission();
     }
@@ -116,12 +124,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.btn_main_scan:
                 scanIndex = SCAN_MAIN;
-                getProductInfo("1-06b-003-20180629-055");
+//                getProductInfo("1-06b-003-20180629-055");
 
-//                new IntentIntegrator(this)
-//                        .setOrientationLocked(false)
-//                        .setCaptureActivity(ScanActivity.class)
-//                        .initiateScan();
+                new IntentIntegrator(this)
+                        .setOrientationLocked(false)
+                        .setCaptureActivity(ScanActivity.class)
+                        .initiateScan();
                 break;
             case R.id.btn_appendix_scan:
                 scanIndex = SCAN_APPENDIX;
@@ -135,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Api.bind(product, new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        ToastUtils.showShort(MainActivity.this,e.getMessage());
+                        ToastUtils.showShort(MainActivity.this, e.getMessage());
                     }
 
                     @Override
@@ -143,14 +151,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         try {
                             JSONObject responseJson = new JSONObject(response);
                             boolean isSuccess = responseJson.getBoolean("success");
-                            if(isSuccess){
-                                ToastUtils.showShort(MainActivity.this,"绑定成功");
-                            }else{
-                                ToastUtils.showShort(MainActivity.this,responseJson.getString("msg"));
+                            if (isSuccess) {
+                                ToastUtils.showShort(MainActivity.this, "绑定成功");
+                            } else {
+                                ToastUtils.showShort(MainActivity.this, responseJson.getString("msg"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            ToastUtils.showShort(MainActivity.this,e.getMessage());
+                            ToastUtils.showShort(MainActivity.this, e.getMessage());
                         }
                     }
                 });
@@ -172,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // ScanResult 为 获取到的字符串
                 String scanResult = intentResult.getContents();
 
-                Log.e("yxj","扫码成功::"+scanResult);
+                Log.e("yxj", "扫码成功::" + scanResult);
 
                 if (scanIndex == SCAN_MAIN) {
                     product.main = scanResult;
@@ -196,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Api.query(scanResult, new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                ToastUtils.showShort(MainActivity.this,e.getMessage());
+                ToastUtils.showShort(MainActivity.this, e.getMessage());
             }
 
             @Override
@@ -204,20 +212,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 try {
                     JSONObject responseJson = new JSONObject(response);
                     boolean isSuccess = responseJson.getBoolean("success");
-                    if(isSuccess){
+                    if (isSuccess) {
                         String objStr = responseJson.getString("data");
                         Gson gson = new Gson();
-                        ProductBean productBean = gson.fromJson(objStr,ProductBean.class);
+                        ProductBean productBean = gson.fromJson(objStr, ProductBean.class);
                         tvMain.setText(productBean.toString());
 
                         product.main = productBean.getBarcode();
                         checkBtnEnable();
-                    }else{
-                        ToastUtils.showShort(MainActivity.this,responseJson.getString("msg"));
+                    } else {
+                        ToastUtils.showShort(MainActivity.this, responseJson.getString("msg"));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    ToastUtils.showShort(MainActivity.this,e.getMessage());
+                    ToastUtils.showShort(MainActivity.this, e.getMessage());
                 }
             }
         });
@@ -235,5 +243,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void checkSubmitEnable() {
         btnSubmit.setEnabled(product.appendix.size() > 0);
     }
+
 
 }

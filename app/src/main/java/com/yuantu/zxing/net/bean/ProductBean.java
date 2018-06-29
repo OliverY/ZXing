@@ -225,12 +225,11 @@ public class ProductBean {
 
     @Override
     public String toString() {
-        return "ProductBean{" +
-                "createDate='" + createDate + '\'' +"\r\n" +
-                ", id=" + id +"\r\n" +
-                ", name='" + name + '\'' +"\r\n" +
-                ", areaName='" + areaName + '\'' +"\r\n" +
-                ", hospitalName=" + hospitalName +
-                '}';
+        return "产品简介" + "\r\n" +
+                "id\t" + id +"\r\n" +
+                "创建时间\t" + createDate + "\r\n" +
+                "产品名称\t" + deviceTypeName +"\r\n" +
+                "区域\t" + areaName +"\r\n" +
+                "医院\t" + hospitalName +"\r\n";
     }
 }
