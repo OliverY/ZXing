@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         product = new Product();
 
-//        product.main = "1-06b-003-20180629-055";
+        product.main = "1-06b-003-20180629-055";
 //        product.appendix.add("1-06b-003-20180629-056");
 //        product.appendix.add("1-06b-003-20180629-057");
 
@@ -130,12 +130,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.btn_main_scan:
                 scanIndex = SCAN_MAIN;
-//                getProductInfo("1-06b-003-20180629-055");
+                getProductInfo("1-06b-003-20180629-055");
 
-                new IntentIntegrator(this)
-                        .setOrientationLocked(false)
-                        .setCaptureActivity(ScanActivity.class)
-                        .initiateScan();
+//                new IntentIntegrator(this)
+//                        .setOrientationLocked(false)
+//                        .setCaptureActivity(ScanActivity.class)
+//                        .initiateScan();
                 break;
             case R.id.btn_appendix_scan:
                 scanIndex = SCAN_APPENDIX;

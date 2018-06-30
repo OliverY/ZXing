@@ -20,28 +20,33 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        findViewById(R.id.btn).setOnClickListener(v->{
-            OKHttpUtils.getInstance().login(new Callback() {
+        findViewById(R.id.btn).setOnClickListener(v -> {
+            OKHttpUtils.getInstance().login(new ObjCallback<LoginBean>(){
                 @Override
-                public void onFailure(Call call, IOException e) {
-                    Log.e("yxj",e.getMessage());
+                public Class<LoginBean> getClazz() {
+                    return LoginBean.class;
                 }
 
                 @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    String result = new String(response.body().bytes());
-                    Log.e("yxj",result);
-                    runOnUiThread(new Runnable() {
+                public Listener<LoginBean> getListener() {
+                    return new Listener<LoginBean>() {
                         @Override
-                        public void run() {
-                            tvResult.setText(result);
+                        public void onSuccess(LoginBean loginBean) {
+                            Log.i("yxj","response::"+loginBean.toString());
+//                            tvResult.setText();
                         }
-                    });
+
+                        @Override
+                        public void onFailed(String msg) {
+                            Log.i("yxj","error::"+msg);
+//                            tvResult.setText(msg);
+                        }
+                    };
                 }
-            });
+            } );
+
+            tvResult = findViewById(R.id.tv_result);
+
         });
-
-        tvResult = findViewById(R.id.tv_result);
-
     }
 }

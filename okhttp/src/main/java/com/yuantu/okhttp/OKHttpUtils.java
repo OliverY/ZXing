@@ -29,47 +29,16 @@ public class OKHttpUtils {
 
     private OKHttpUtils(){
         client = new OkHttpClient.Builder()
-                .addInterceptor(new Interceptor() {
-                    @Override
-                    public Response intercept(Chain chain) throws IOException {
-                        Request originalRequest = chain.request();
-//                        HttpUrl httpUrl = request.url();
-//                        httpUrl.
-
-                        Log.i("yxj","contentType::"+originalRequest);
-
-                        String token = "";
-
-                        Request updateRequest = originalRequest.newBuilder()
-                                .header("token",token)
-                                .build();
-
-//                        ResponseBody.create("text/");
-//
-//                        new Response.Builder()
-//                                .body()
-
-                        Log.i("yxj","拦截request 1");
-                        Response response = chain.proceed(originalRequest);
-                        Log.i("yxj","拦截response 1");
-                        return response;
-                    }
-                })
                 .addNetworkInterceptor(new Interceptor() {
                     @Override
                     public Response intercept(Chain chain) throws IOException {
-                        Request request = chain.request();
-                        Log.i("yxj","拦截request 2");
-                        Response response = chain.proceed(request);
-                        Log.i("yxj","拦截response 2");
+                        Response response = chain.proceed(chain.request());
 
                         BufferedSource source = response.body().source();
                         source.request(Long.MAX_VALUE);
                         Buffer buffer = source.buffer();
                         Log.i("yxj","responseStr="+buffer.clone().readString(Charset.forName("UTF-8")));
 
-//                        String responseStr = new String(response.body().bytes());
-//                        Log.i("yxj","responseStr="+responseStr);
                         return response;
                     }
                 })
@@ -84,8 +53,15 @@ public class OKHttpUtils {
         return Holder.instance;
     }
 
-    public void login(Callback callback){
+    public void login(ObjCallback callback){
         String url = "https://route-uat.yuantutech.com/user-web/restapi/common/ytDoctors/loginNew?phoneNum=18848958292&password=e10adc3949ba59abbe56e057f20f883e&unionId=29";
+
+//        Request request = new Request.Builder()
+//                .get()
+//                .url(url)
+//                .build();
+//        Call call = client.newCall(request);
+//        call.enqueue(callback);
 
         Request request = new Request.Builder()
                 .get()
@@ -93,6 +69,5 @@ public class OKHttpUtils {
                 .build();
         Call call = client.newCall(request);
         call.enqueue(callback);
-
     }
 }
