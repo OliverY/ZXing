@@ -24,9 +24,9 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.yuantu.zxing.adapter.ProductAdapter;
 import com.yuantu.zxing.bean.Product;
 import com.yuantu.zxing.net.Api;
-import com.yuantu.zxing.net.callback.ApiCallback;
+import com.yuantu.zxing.net.callback.BeanCallback;
 import com.yuantu.zxing.net.bean.ProductBean;
-import com.yuantu.zxing.net.callback.ResponseCallback;
+import com.yuantu.zxing.net.callback.ApiCallback;
 import com.yuantu.zxing.utils.ToastUtils;
 
 import java.util.ArrayList;
@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .initiateScan();
                 break;
             case R.id.btn_submit:
-                Api.bind(product, new ResponseCallback() {
+                Api.bind(product, new ApiCallback() {
                     @Override
                     protected Callback getCallback() {
                         return new Callback() {
@@ -194,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void getProductInfo(String scanResult) {
 
-        Api.query(scanResult, new ApiCallback<ProductBean>() {
+        Api.query(scanResult, new BeanCallback<ProductBean>() {
             @Override
             protected Class<ProductBean> getBeanClass() {
                 return ProductBean.class;

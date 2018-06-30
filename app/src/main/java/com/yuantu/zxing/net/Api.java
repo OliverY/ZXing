@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.yuantu.zxing.bean.Product;
-import com.yuantu.zxing.net.callback.ApiCallback;
+import com.yuantu.zxing.net.callback.BeanCallback;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -47,21 +47,6 @@ public class Api {
                 .url(url)
                 .content(json)
                 .mediaType(MediaType.parse("application/json; charset=utf-8"))
-                .build()
-                .execute(callback);
-    }
-
-    /**
-     * 登录
-     * @param email
-     * @param password
-     * @param callback
-     */
-    public static void login(String email,String password,ApiCallback callback){
-//        /user/login?email=&password=
-        OkHttpUtils
-                .get()
-                .url("")
                 .build()
                 .execute(callback);
     }
