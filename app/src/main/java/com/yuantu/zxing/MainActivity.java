@@ -60,8 +60,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         product = new Product();
 
         product.main = "1-06b-003-20180629-055";
-//        product.appendix.add("1-06b-003-20180629-056");
-//        product.appendix.add("1-06b-003-20180629-057");
+        product.appendix.add("1-06b-003-20180629-056");
+        product.appendix.add("1-06b-003-20180629-057");
 
         initview();
         requestPermission();
@@ -142,6 +142,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_submit:
                 Api.bind(product, new ApiCallback<String>() {
                     @Override
+                    protected Class<String> getBeanClass() {
+                        return String.class;
+                    }
+
+                    @Override
                     protected Callback<String> getCallback() {
                         return new Callback<String>() {
                             @Override
@@ -161,30 +166,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         };
                     }
                 });
-
-                // map提交
-//                Api.bind(product, new StringCallback() {
-//                    @Override
-//                    public void onError(Call call, Exception e, int id) {
-//                        ToastUtils.showShort(MainActivity.this, e.getMessage());
-//                    }
-//
-//                    @Override
-//                    public void onResponse(String response, int id) {
-//                        try {
-//                            JSONObject responseJson = new JSONObject(response);
-//                            boolean isSuccess = responseJson.getBoolean("success");
-//                            if (isSuccess) {
-//                                ToastUtils.showShort(MainActivity.this, "绑定成功");
-//                            } else {
-//                                ToastUtils.showShort(MainActivity.this, responseJson.getString("msg"));
-//                            }
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                            ToastUtils.showShort(MainActivity.this, e.getMessage());
-//                        }
-//                    }
-//                });
 
                 break;
         }
@@ -226,6 +207,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Api.query(scanResult, new ApiCallback<ProductBean>() {
             @Override
+            protected Class<ProductBean> getBeanClass() {
+                return ProductBean.class;
+            }
+
+            @Override
             protected Callback<ProductBean> getCallback() {
                 return new Callback<ProductBean>() {
                     @Override
@@ -244,31 +230,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-//        Api.query(scanResult, new StringCallback() {
-//            @Override
-//            public void onError(Call call, Exception e, int id) {
-//                ToastUtils.showShort(MainActivity.this, e.getMessage());
-//            }
-//
-//            @Override
-//            public void onResponse(String response, int id) {
-//                try {
-//                    JSONObject responseJson = new JSONObject(response);
-//                    boolean isSuccess = responseJson.getBoolean("success");
-//                    if (isSuccess) {
-//                        String objStr = responseJson.getString("data");
-//                        Gson gson = new Gson();
-//                        ProductBean productBean = gson.fromJson(objStr, ProductBean.class);
-//
-//                    } else {
-//                        ToastUtils.showShort(MainActivity.this, responseJson.getString("msg"));
-//                    }
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                    ToastUtils.showShort(MainActivity.this, e.getMessage());
-//                }
-//            }
-//        });
     }
 
     private void checkBtnEnable() {

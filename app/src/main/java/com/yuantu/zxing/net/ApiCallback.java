@@ -1,7 +1,6 @@
 package com.yuantu.zxing.net;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONException;
@@ -29,7 +28,8 @@ public abstract class ApiCallback<T> extends StringCallback {
             boolean success = jsonObject.getBoolean("success");
             if(success){
                 Gson gson = new Gson();
-                T t = gson.fromJson(jsonObject.getString("data"),new TypeToken<T>(){}.getType());
+                String result = jsonObject.getString("data");
+                T t = gson.fromJson(result,getBeanClass());
                 getCallback().onResponse(t);
             }else {
                 getCallback().onError(jsonObject.getString("msg"));
@@ -39,6 +39,12 @@ public abstract class ApiCallback<T> extends StringCallback {
             getCallback().onError(e.getMessage());
         }
     }
+
+    /**
+     * 获取bean的类型
+     * @return
+     */
+    protected abstract Class<T> getBeanClass();
 
     protected abstract Callback<T> getCallback();
 
