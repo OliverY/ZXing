@@ -1,4 +1,4 @@
-package com.yuantu.zxing.net;
+package com.yuantu.zxing.net.callback;
 
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -10,11 +10,11 @@ import okhttp3.Call;
 
 /**
  * Author:  Yxj
- * Time:    2018/6/28 下午2:22
+ * Time:    2018/6/30 上午11:00
  * -----------------------------------------
  * Description:
  */
-public abstract class ApiCallback<T> extends StringCallback {
+public abstract class ResponseCallback extends StringCallback {
 
     @Override
     public void onError(Call call, Exception e, int id) {
@@ -27,10 +27,7 @@ public abstract class ApiCallback<T> extends StringCallback {
             JSONObject jsonObject = new JSONObject(response);
             boolean success = jsonObject.getBoolean("success");
             if(success){
-                Gson gson = new Gson();
-                String result = jsonObject.getString("data");
-                T t = gson.fromJson(result,getBeanClass());
-                getCallback().onResponse(t);
+                getCallback().onResponse(jsonObject.getString("data"));
             }else {
                 getCallback().onError(jsonObject.getString("msg"));
             }
@@ -40,16 +37,10 @@ public abstract class ApiCallback<T> extends StringCallback {
         }
     }
 
-    /**
-     * 获取bean的类型
-     * @return
-     */
-    protected abstract Class<T> getBeanClass();
+    protected abstract Callback getCallback();
 
-    protected abstract Callback<T> getCallback();
-
-    public interface Callback<T>{
-        void onResponse(T t);
+    public interface Callback{
+        void onResponse(String jsonStr);
         void onError(String msg);
     }
 

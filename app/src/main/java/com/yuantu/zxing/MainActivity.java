@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -25,8 +24,9 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.yuantu.zxing.adapter.ProductAdapter;
 import com.yuantu.zxing.bean.Product;
 import com.yuantu.zxing.net.Api;
-import com.yuantu.zxing.net.ApiCallback;
+import com.yuantu.zxing.net.callback.ApiCallback;
 import com.yuantu.zxing.net.bean.ProductBean;
+import com.yuantu.zxing.net.callback.ResponseCallback;
 import com.yuantu.zxing.utils.ToastUtils;
 
 import java.util.ArrayList;
@@ -140,23 +140,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .initiateScan();
                 break;
             case R.id.btn_submit:
-                Api.bind(product, new ApiCallback<String>() {
+                Api.bind(product, new ResponseCallback() {
                     @Override
-                    protected Class<String> getBeanClass() {
-                        return String.class;
-                    }
-
-                    @Override
-                    protected Callback<String> getCallback() {
-                        return new Callback<String>() {
+                    protected Callback getCallback() {
+                        return new Callback() {
                             @Override
-                            public void onResponse(String s) {
-                                boolean isSuccess = Boolean.parseBoolean(s);
-                                if (isSuccess) {
-                                    ToastUtils.showShort(MainActivity.this, "绑定成功");
-                                } else {
-                                    ToastUtils.showShort(MainActivity.this, "绑定失败");
-                                }
+                            public void onResponse(String jsonStr) {
+                                ToastUtils.showShort(MainActivity.this, "绑定成功");
                             }
 
                             @Override
@@ -166,7 +156,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         };
                     }
                 });
-
                 break;
         }
 
@@ -178,9 +167,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (intentResult != null) {
             if (intentResult.getContents() == null) {
-                Toast.makeText(this, "内容为空", Toast.LENGTH_LONG).show();
+                ToastUtils.showShort(MainActivity.this,"内容为空");
             } else {
-                Toast.makeText(this, "扫描成功", Toast.LENGTH_LONG).show();
+                ToastUtils.showShort(MainActivity.this,"扫描成功");
                 // ScanResult 为 获取到的字符串
                 String scanResult = intentResult.getContents();
 
@@ -212,8 +201,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
 
             @Override
-            protected Callback<ProductBean> getCallback() {
-                return new Callback<ProductBean>() {
+            protected ObjCallback<ProductBean> getObjCallback() {
+                return new ObjCallback<ProductBean>() {
                     @Override
                     public void onResponse(ProductBean productBean) {
                         tvMain.setText(productBean.toString());
@@ -224,11 +213,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     @Override
                     public void onError(String msg) {
-                        ToastUtils.showShort(MainActivity.this, msg);
+                        ToastUtils.showShort(MainActivity.this,msg);
                     }
                 };
             }
         });
+
+
 
     }
 

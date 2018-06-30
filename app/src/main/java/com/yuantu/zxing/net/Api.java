@@ -4,11 +4,10 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.yuantu.zxing.bean.Product;
-import com.yuantu.zxing.net.bean.ApiResponse;
+import com.yuantu.zxing.net.callback.ApiCallback;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import okhttp3.Call;
 import okhttp3.MediaType;
 
 /**
