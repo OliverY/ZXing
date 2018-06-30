@@ -19,7 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -29,15 +28,10 @@ import com.yuantu.zxing.net.Api;
 import com.yuantu.zxing.net.ApiCallback;
 import com.yuantu.zxing.net.bean.ProductBean;
 import com.yuantu.zxing.utils.ToastUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 import io.reactivex.functions.Consumer;
-import okhttp3.Call;
 
 /**
  * 记得改写成clean mvp
