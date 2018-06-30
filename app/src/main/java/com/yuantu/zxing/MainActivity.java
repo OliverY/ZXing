@@ -26,6 +26,7 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.yuantu.zxing.adapter.ProductAdapter;
 import com.yuantu.zxing.bean.Product;
 import com.yuantu.zxing.net.Api;
+import com.yuantu.zxing.net.ApiCallback;
 import com.yuantu.zxing.net.bean.ProductBean;
 import com.yuantu.zxing.utils.ToastUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -145,29 +146,51 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .initiateScan();
                 break;
             case R.id.btn_submit:
-                // map提交
-                Api.bind(product, new StringCallback() {
+                Api.bind(product, new ApiCallback<String>() {
                     @Override
-                    public void onError(Call call, Exception e, int id) {
-                        ToastUtils.showShort(MainActivity.this, e.getMessage());
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        try {
-                            JSONObject responseJson = new JSONObject(response);
-                            boolean isSuccess = responseJson.getBoolean("success");
-                            if (isSuccess) {
-                                ToastUtils.showShort(MainActivity.this, "绑定成功");
-                            } else {
-                                ToastUtils.showShort(MainActivity.this, responseJson.getString("msg"));
+                    protected Callback<String> getCallback() {
+                        return new Callback<String>() {
+                            @Override
+                            public void onResponse(String s) {
+                                boolean isSuccess = Boolean.parseBoolean(s);
+                                if (isSuccess) {
+                                    ToastUtils.showShort(MainActivity.this, "绑定成功");
+                                } else {
+                                    ToastUtils.showShort(MainActivity.this, "绑定失败");
+                                }
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            ToastUtils.showShort(MainActivity.this, e.getMessage());
-                        }
+
+                            @Override
+                            public void onError(String msg) {
+                                ToastUtils.showShort(MainActivity.this, msg);
+                            }
+                        };
                     }
                 });
+
+                // map提交
+//                Api.bind(product, new StringCallback() {
+//                    @Override
+//                    public void onError(Call call, Exception e, int id) {
+//                        ToastUtils.showShort(MainActivity.this, e.getMessage());
+//                    }
+//
+//                    @Override
+//                    public void onResponse(String response, int id) {
+//                        try {
+//                            JSONObject responseJson = new JSONObject(response);
+//                            boolean isSuccess = responseJson.getBoolean("success");
+//                            if (isSuccess) {
+//                                ToastUtils.showShort(MainActivity.this, "绑定成功");
+//                            } else {
+//                                ToastUtils.showShort(MainActivity.this, responseJson.getString("msg"));
+//                            }
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                            ToastUtils.showShort(MainActivity.this, e.getMessage());
+//                        }
+//                    }
+//                });
 
                 break;
         }
@@ -207,34 +230,51 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void getProductInfo(String scanResult) {
 
-        Api.query(scanResult, new StringCallback() {
+        Api.query(scanResult, new ApiCallback<ProductBean>() {
             @Override
-            public void onError(Call call, Exception e, int id) {
-                ToastUtils.showShort(MainActivity.this, e.getMessage());
-            }
-
-            @Override
-            public void onResponse(String response, int id) {
-                try {
-                    JSONObject responseJson = new JSONObject(response);
-                    boolean isSuccess = responseJson.getBoolean("success");
-                    if (isSuccess) {
-                        String objStr = responseJson.getString("data");
-                        Gson gson = new Gson();
-                        ProductBean productBean = gson.fromJson(objStr, ProductBean.class);
+            protected Callback<ProductBean> getCallback() {
+                return new Callback<ProductBean>() {
+                    @Override
+                    public void onResponse(ProductBean productBean) {
                         tvMain.setText(productBean.toString());
 
                         product.main = productBean.getBarcode();
                         checkBtnEnable();
-                    } else {
-                        ToastUtils.showShort(MainActivity.this, responseJson.getString("msg"));
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    ToastUtils.showShort(MainActivity.this, e.getMessage());
-                }
+
+                    @Override
+                    public void onError(String msg) {
+                        ToastUtils.showShort(MainActivity.this, msg);
+                    }
+                };
             }
         });
+
+//        Api.query(scanResult, new StringCallback() {
+//            @Override
+//            public void onError(Call call, Exception e, int id) {
+//                ToastUtils.showShort(MainActivity.this, e.getMessage());
+//            }
+//
+//            @Override
+//            public void onResponse(String response, int id) {
+//                try {
+//                    JSONObject responseJson = new JSONObject(response);
+//                    boolean isSuccess = responseJson.getBoolean("success");
+//                    if (isSuccess) {
+//                        String objStr = responseJson.getString("data");
+//                        Gson gson = new Gson();
+//                        ProductBean productBean = gson.fromJson(objStr, ProductBean.class);
+//
+//                    } else {
+//                        ToastUtils.showShort(MainActivity.this, responseJson.getString("msg"));
+//                    }
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                    ToastUtils.showShort(MainActivity.this, e.getMessage());
+//                }
+//            }
+//        });
     }
 
     private void checkBtnEnable() {
