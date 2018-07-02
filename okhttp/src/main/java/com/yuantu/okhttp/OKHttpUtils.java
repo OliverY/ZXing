@@ -73,6 +73,18 @@ public class OKHttpUtils {
         Call call = client.newCall(request);
 //        call.enqueue(callback);
 
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                response.body().string();
+            }
+        });
+
         call.enqueue(new ApiCallback<ApiResponse<LoginBean>>(new ApiCallback.Callback<ApiResponse<LoginBean>>() {
             @Override
             public void onSuccess(ApiResponse<LoginBean> apiResponse) {

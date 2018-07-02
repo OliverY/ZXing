@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.btn_main_scan:
                 scanIndex = SCAN_MAIN;
-                getProductInfo("1-107-001-20180702-004");
+                getProductInfo("1-107-012-20180702-019");
 
 //                new IntentIntegrator(this)
 //                        .setOrientationLocked(false)

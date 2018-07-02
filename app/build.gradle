@@ -39,7 +39,7 @@ dependencies {
     // 使用rxPermission
     implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.3@aar'
 
-    implementation 'com.zhy:okhttputils:2.6.2'
+//    implementation 'com.zhy:okhttputils:2.6.2'
 //    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
 
     // BaseRecyclerViewAdapterHelper
@@ -47,4 +47,6 @@ dependencies {
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
 
     implementation 'com.google.code.gson:gson:2.8.5'
+
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
 }
