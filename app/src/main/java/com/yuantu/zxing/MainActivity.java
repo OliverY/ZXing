@@ -22,11 +22,11 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.yuantu.zxing.adapter.ProductAdapter;
+import com.yuantu.zxing.adapter.ProductBindedAdapter;
 import com.yuantu.zxing.bean.Product;
 import com.yuantu.zxing.net.ApiFactory;
 import com.yuantu.zxing.net.bean.ApiResponse;
 import com.yuantu.zxing.net.bean.ProductBean;
-import com.yuantu.zxing.test.TestActivity;
 import com.yuantu.zxing.utils.ToastUtils;
 
 import java.util.ArrayList;
@@ -42,12 +42,14 @@ import io.reactivex.functions.Consumer;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView tvMain;
-    private RecyclerView ry;
+    private RecyclerView ryAdd;
+    private RecyclerView ryBinded;
     private Product product;
     private Button btnMainScan;
     private Button btnAppendixScan;
     private Button btnSubmit;
-    private ProductAdapter adapter;
+    private ProductAdapter addAdapter;
+    private ProductBindedAdapter bindedAdapter;
 
     // 代表扫码的入口
     private static final int SCAN_MAIN = 1;
@@ -55,7 +57,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private int scanIndex;
 
-    private List<ProductBean> total;
+    private List<ProductBean> addedList;
+    private List<ProductBean> bindedList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,19 +85,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnSubmit.setOnClickListener(this);
 
         tvMain = findViewById(R.id.tv_main);
-        ry = findViewById(R.id.ry);
+        ryAdd = findViewById(R.id.ry_add);
+        ryBinded = findViewById(R.id.ry_binded);
 
-        ry.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        adapter = new ProductAdapter();
-        adapter.setOnItemClickListener((BaseQuickAdapter adapter, View view, int position) -> {
-            if (total.get(position).getType() != 1) {
+        initRyBinded();
+        initRyAdd();
+
+        btnAppendixScan.setEnabled(false);
+        btnSubmit.setEnabled(false);
+
+        checkBtnEnable();
+    }
+
+    private void initRyAdd() {
+
+        ryAdd.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        addAdapter = new ProductAdapter();
+        addAdapter.setOnItemClickListener((BaseQuickAdapter adapter, View view, int position) -> {
+            if (addedList.get(position).getType() != 1) {
                 new AlertDialog.Builder(MainActivity.this)
                         .setTitle("是否删除该原料")
                         .setPositiveButton("删除", (DialogInterface dialog, int which) -> {
                             // 删除该项
 
-                            total.remove(position);
-                            adapter.notifyItemRemoved(position);
+                            addedList.remove(position);
+                            addAdapter.notifyItemRemoved(position);
 
                             checkBtnEnable();
                             dialog.dismiss();
@@ -108,14 +123,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         emptyView.setGravity(Gravity.CENTER);
         emptyView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         emptyView.setText("暂未添加原料");
-        adapter.bindToRecyclerView(ry);
-        adapter.setEmptyView(emptyView);
-        ry.setAdapter(adapter);
+        addAdapter.bindToRecyclerView(ryAdd);
+        addAdapter.setEmptyView(emptyView);
+        ryAdd.setAdapter(addAdapter);
+    }
 
-        btnAppendixScan.setEnabled(false);
-        btnSubmit.setEnabled(false);
+    private void initRyBinded() {
 
-        checkBtnEnable();
+        ryAdd.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        bindedAdapter = new ProductBindedAdapter();
+
+        TextView emptyView = new TextView(this);
+        emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        emptyView.setGravity(Gravity.CENTER);
+        emptyView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        emptyView.setText("暂无绑定原料");
+        bindedAdapter.bindToRecyclerView(ryAdd);
+        bindedAdapter.setEmptyView(emptyView);
+        ryBinded.setAdapter(bindedAdapter);
     }
 
     private void requestPermission() {
@@ -136,14 +161,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.btn_main_scan:
                 scanIndex = SCAN_MAIN;
-//                getProductInfo("1-107-012-20180702-019");
+                getProductInfo("1-107-012-20180702-019");
 //                getChildDevices(13);
 //                startActivity(new Intent(this, TestActivity.class));
 
-                new IntentIntegrator(this)
-                        .setOrientationLocked(false)
-                        .setCaptureActivity(ScanActivity.class)
-                        .initiateScan();
+//                new IntentIntegrator(this)
+//                        .setOrientationLocked(false)
+//                        .setCaptureActivity(ScanActivity.class)
+//                        .initiateScan();
                 break;
             case R.id.btn_appendix_scan:
                 scanIndex = SCAN_APPENDIX;
@@ -153,10 +178,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .initiateScan();
                 break;
             case R.id.btn_submit:
-                for (ProductBean productBean : total) {
-                    if (productBean.getType() != 1) {
-                        product.appendix.add(productBean.getBarcode());
-                    }
+                for (ProductBean productBean : addedList) {
+                    product.appendix.add(productBean.getBarcode());
                 }
 
                 ApiFactory.bind(product)
@@ -207,18 +230,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 if (scanIndex == SCAN_MAIN) {
                     resetData();
-
                     product.main = scanResult;
                     // 查询网络
                     getProductInfo(scanResult);
-
                 } else if (scanIndex == SCAN_APPENDIX) {
-//                    product.appendix.add(scanResult);
-//                    adapter.setNewData(product.appendix);
-
                     scanChildProduct(scanResult);
                     checkBtnEnable();
-
                 }
             }
         } else {
@@ -228,7 +245,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void scanChildProduct(String scanResult) {
         // 检查重复
-        for (ProductBean product : total) {
+        for (ProductBean product : addedList) {
             if (scanResult.equals(product.getBarcode())) {
                 if (product.getType() == 1) {
                     ToastUtils.showShort(MainActivity.this, "此原料已绑定");
@@ -249,8 +266,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     @Override
                     public void onNext(ProductBean productBean) {
-                        total.add(0, productBean);
-                        adapter.notifyItemInserted(0);
+                        addedList.add(0, productBean);
+                        addAdapter.notifyItemInserted(0);
                     }
 
                     @Override
@@ -311,8 +328,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         for (ProductBean product : childDevicesBeans) {
                             product.setType(1);
                         }
-                        total = childDevicesBeans;
-                        adapter.setNewData(total);
+                        bindedList = childDevicesBeans;
+                        bindedAdapter.setNewData(bindedList);
                     }
 
                     @Override
@@ -337,8 +354,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void checkSubmitEnable() {
-        if (total != null) {
-            for (ProductBean productBean : total) {
+        if (addedList != null) {
+            for (ProductBean productBean : addedList) {
                 if (productBean.getType() == 1) {
                     btnSubmit.setEnabled(true);
                     return;
@@ -350,7 +367,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void resetData() {
-        total = new ArrayList<>();
+        addedList = new ArrayList<>();
         product = new Product();
     }
 
