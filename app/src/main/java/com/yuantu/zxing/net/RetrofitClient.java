@@ -1,6 +1,10 @@
 package com.yuantu.zxing.net;
 
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Author:  Yxj
@@ -10,15 +14,38 @@ import retrofit2.Retrofit;
  */
 public class RetrofitClient {
 
-    private static final String BASE_URL = "http://120.55.185.136:8090/jszx";
+    private static final String BASE_URL = "http://120.55.185.136:8090/jszx/";
+    private Retrofit retrofit;
 
-    public void fun(){
+    private RetrofitClient(){
+    }
 
+    interface Holder{
+        RetrofitClient instance = new RetrofitClient();
+    }
 
+    public static RetrofitClient getInstance(){
+        return Holder.instance;
+    }
 
-        new Retrofit.Builder()
-                .baseUrl(BASE_URL)
+    private OkHttpClient createOkHttpClient(){
+        return new OkHttpClient.Builder()
+                .addInterceptor(new LoggingInterceptor())
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10,TimeUnit.SECONDS)
                 .build();
+    }
+
+    public void init(){
+        retrofit = new Retrofit.Builder()
+                .client(createOkHttpClient())
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+    }
+
+    public Retrofit getRetrofit() {
+        return retrofit;
     }
 
 }

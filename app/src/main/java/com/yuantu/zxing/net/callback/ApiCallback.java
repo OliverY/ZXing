@@ -1,12 +1,10 @@
 package com.yuantu.zxing.net.callback;
 
 
-import com.zhy.http.okhttp.callback.StringCallback;
+import com.yuantu.zxing.net.bean.ApiResponse;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import okhttp3.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Author:  Yxj
@@ -14,31 +12,25 @@ import okhttp3.Call;
  * -----------------------------------------
  * Description:
  */
-public abstract class ApiCallback extends StringCallback {
+public abstract class ApiCallback<T> implements Callback<ApiResponse> {
 
-    public abstract void onSuccess(String jsonStr);
+    public abstract void onSuccess(T t);
 
     public abstract void onFailed(String msg);
 
     @Override
-    public void onError(Call call, Exception e, int id) {
-        onFailed(e.getMessage());
-    }
-
-    @Override
-    public void onResponse(String response, int id) {
-        try {
-            JSONObject jsonObject = new JSONObject(response);
-            boolean success = jsonObject.getBoolean("success");
-            if(success){
-                onSuccess(jsonObject.getString("data"));
-            }else {
-                onFailed(jsonObject.getString("msg"));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-            onFailed(e.getMessage());
+    public void onResponse(retrofit2.Call<ApiResponse> call, Response<ApiResponse> response) {
+        ApiResponse apiResponse = response.body();
+        if(apiResponse.isSuccess()){
+            T t = (T) apiResponse.getData();
+            onSuccess(t);
+        }else{
+            onFailed(apiResponse.getMsg());
         }
     }
 
+    @Override
+    public void onFailure(retrofit2.Call<ApiResponse> call, Throwable t) {
+        onFailed(t.getMessage());
+    }
 }

@@ -18,15 +18,17 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.yuantu.zxing.adapter.ProductAdapter;
 import com.yuantu.zxing.bean.Product;
-import com.yuantu.zxing.net.Api;
+import com.yuantu.zxing.net.ApiFactory;
+import com.yuantu.zxing.net.RetrofitClient;
 import com.yuantu.zxing.net.bean.ProductBean;
 import com.yuantu.zxing.net.callback.ApiCallback;
-import com.yuantu.zxing.net.callback.ObjectCallback;
 import com.yuantu.zxing.utils.ToastUtils;
 
 import java.util.ArrayList;
@@ -140,17 +142,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .initiateScan();
                 break;
             case R.id.btn_submit:
-                Api.bind(product, new ApiCallback() {
-                    @Override
-                    public void onSuccess(String jsonStr) {
-                        ToastUtils.showShort(MainActivity.this, "绑定成功");
-                    }
-
-                    @Override
-                    public void onFailed(String msg) {
-                        ToastUtils.showShort(MainActivity.this, msg);
-                    }
-                });
+//                Api.bind(product, new ApiCallback() {
+//                    @Override
+//                    public void onSuccess(String jsonStr) {
+//                        ToastUtils.showShort(MainActivity.this, "绑定成功");
+//                    }
+//
+//                    @Override
+//                    public void onFailed(String msg) {
+//                        ToastUtils.showShort(MainActivity.this, msg);
+//                    }
+//                });
                 break;
         }
 
@@ -189,10 +191,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void getProductInfo(String scanResult) {
 
-        Api.query(scanResult, new ObjectCallback<ProductBean>(ProductBean.class) {
+        ApiFactory.query(scanResult, new ApiCallback<ProductBean>() {
 
             @Override
-            public void onObjectSuccess(ProductBean productBean) {
+            public void onSuccess(ProductBean productBean) {
                 tvMain.setText(productBean.toString());
 
                 product.main = productBean.getBarcode();
@@ -200,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
 
             @Override
-            public void onObjectFailed(String msg) {
+            public void onFailed(String msg) {
                 ToastUtils.showShort(MainActivity.this, msg);
             }
         });
