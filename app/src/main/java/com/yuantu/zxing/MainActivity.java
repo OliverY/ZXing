@@ -18,7 +18,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -190,11 +189,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void getProductInfo(String scanResult) {
 
-        Api.query(scanResult, new ObjectCallback<ProductBean>() {
-            @Override
-            public ProductBean parseJsonObject(String json) {
-                return new Gson().fromJson(json, ProductBean.class);
-            }
+        Api.query(scanResult, new ObjectCallback<ProductBean>(ProductBean.class) {
 
             @Override
             public void onObjectSuccess(ProductBean productBean) {
