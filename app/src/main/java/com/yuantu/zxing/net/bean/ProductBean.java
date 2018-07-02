@@ -11,32 +11,36 @@ public class ProductBean {
 
     /**
      * createBy : 93
-     * createDate : 2018-06-28 23:35:43
+     * createDate : 2018-07-02 10:20:32
      * updateBy : null
-     * updateDate : 2018-06-28 23:35:43
+     * updateDate : null
      * deleted : false
-     * id : 12
-     * barcode : 1-06b-003-20180629-055
+     * id : 13
+     * barcode : 1-107-012-20180702-019
      * name : null
      * model : null
      * deviceTypeId : 107
      * deviceTypeName : YT-DT550
-     * hospitalId : 9
+     * hospitalId : 8
      * parentId : 0
-     * recievingId : 3
-     * inventoryId : 3
+     * recievingId : 2
+     * inventoryId : 5
      * produced : true
      * troubleCount : null
      * areaId : null
      * areaName : 华北大区
-     * hospitalName : 监控监控
+     * hospitalName : 威海市中心医院
      * modelName : null
+     * printed : false
+     * position : null
+     * childDevices : null
+     * u8BatchNo : 567766
      */
 
     private int createBy;
     private String createDate;
     private Object updateBy;
-    private String updateDate;
+    private Object updateDate;
     private boolean deleted;
     private int id;
     private String barcode;
@@ -54,6 +58,10 @@ public class ProductBean {
     private String areaName;
     private String hospitalName;
     private Object modelName;
+    private boolean printed;
+    private Object position;
+    private Object childDevices;
+    private String u8BatchNo;
 
     public int getCreateBy() {
         return createBy;
@@ -79,11 +87,11 @@ public class ProductBean {
         this.updateBy = updateBy;
     }
 
-    public String getUpdateDate() {
+    public Object getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(String updateDate) {
+    public void setUpdateDate(Object updateDate) {
         this.updateDate = updateDate;
     }
 
@@ -223,13 +231,46 @@ public class ProductBean {
         this.modelName = modelName;
     }
 
+    public boolean isPrinted() {
+        return printed;
+    }
+
+    public void setPrinted(boolean printed) {
+        this.printed = printed;
+    }
+
+    public Object getPosition() {
+        return position;
+    }
+
+    public void setPosition(Object position) {
+        this.position = position;
+    }
+
+    public Object getChildDevices() {
+        return childDevices;
+    }
+
+    public void setChildDevices(Object childDevices) {
+        this.childDevices = childDevices;
+    }
+
+    public String getU8BatchNo() {
+        return u8BatchNo;
+    }
+
+    public void setU8BatchNo(String u8BatchNo) {
+        this.u8BatchNo = u8BatchNo;
+    }
+
     @Override
     public String toString() {
         return "产品简介" + "\r\n" +
-                "产品id\t" + id +"\r\n" +
-                "入库时间\t" + createDate + "\r\n" +
-                "产品名称\t" + deviceTypeName +"\r\n" +
-                "区域\t" + areaName +"\r\n" +
-                "医院\t" + hospitalName +"\r\n";
+                "产品名称：\t\t" + deviceTypeName + "\r\n" +
+                "产品id：\t\t" + id + "\r\n" +
+                "入库时间：\t\t" + createDate + "\r\n" +
+                "U8批次号：\t\t" + u8BatchNo + "\r\n" +
+                "区域：\t\t" + areaName + "\r\n" +
+                "医院：\t\t" + hospitalName + "\r\n";
     }
 }
