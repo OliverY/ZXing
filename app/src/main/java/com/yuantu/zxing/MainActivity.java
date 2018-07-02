@@ -61,9 +61,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         product = new Product();
 
-        product.main = "1-06b-003-20180629-055";
-//        product.appendix.add("1-06b-003-20180629-056");
-//        product.appendix.add("1-06b-003-20180629-057");
+//        product.main = "1-107-012-20180702-019";
+//        product.appendix.add("2-136-012-20180702-006");
+//        product.appendix.add("2-136-012-20180702-008");
 
         initview();
         requestPermission();
@@ -127,12 +127,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.btn_main_scan:
                 scanIndex = SCAN_MAIN;
-                getProductInfo("1-107-012-20180702-019");
+//                getProductInfo("1-107-012-20180702-019");
 
-//                new IntentIntegrator(this)
-//                        .setOrientationLocked(false)
-//                        .setCaptureActivity(ScanActivity.class)
-//                        .initiateScan();
+                new IntentIntegrator(this)
+                        .setOrientationLocked(false)
+                        .setCaptureActivity(ScanActivity.class)
+                        .initiateScan();
                 break;
             case R.id.btn_appendix_scan:
                 scanIndex = SCAN_APPENDIX;
@@ -142,17 +142,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .initiateScan();
                 break;
             case R.id.btn_submit:
-//                Api.bind(product, new ApiCallback() {
-//                    @Override
-//                    public void onSuccess(String jsonStr) {
-//                        ToastUtils.showShort(MainActivity.this, "绑定成功");
-//                    }
-//
-//                    @Override
-//                    public void onFailed(String msg) {
-//                        ToastUtils.showShort(MainActivity.this, msg);
-//                    }
-//                });
+                ApiFactory.bind(product, new ApiCallback<String>() {
+
+                    @Override
+                    public void onSuccess(String s) {
+                        ToastUtils.showShort(MainActivity.this, "绑定成功");
+                    }
+
+                    @Override
+                    public void onFailed(String msg) {
+                        ToastUtils.showShort(MainActivity.this, msg);
+                    }
+                });
                 break;
         }
 

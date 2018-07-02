@@ -1,10 +1,14 @@
 package com.yuantu.zxing.net.service;
 
+import com.yuantu.zxing.bean.Product;
 import com.yuantu.zxing.net.bean.ApiResponse;
 import com.yuantu.zxing.net.bean.ProductBean;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.Field;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 /**
@@ -18,5 +22,7 @@ public interface ApiService {
     @GET("product/query")
     Call<ApiResponse<ProductBean>> query(@Query("barcode") String barCode);
 
+    @POST("product/bind")
+    Call<ApiResponse> bind(@Body Product product);
 
 }
