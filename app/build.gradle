@@ -21,6 +21,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    // 因为rxjava和adapter-rxjava有相同的部分
+    packagingOptions{
+        exclude 'META-INF/rxjava.properties'
+    }
 }
 
 dependencies {
@@ -33,21 +38,21 @@ dependencies {
     implementation 'com.google.zxing:core:3.3.3'
     //zxing核心依赖
     implementation 'com.journeyapps:zxing-android-embedded:3.3.0'
-    //生成二维码依赖
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    implementation 'io.reactivex.rxjava2:rxjava:2.0.5'
+
     // 使用rxPermission
     implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.3@aar'
-
-//    implementation 'com.zhy:okhttputils:2.6.2'
-//    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.0'
 
     // BaseRecyclerViewAdapterHelper
     implementation 'com.android.support:recyclerview-v7:26.1.0'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
 
     implementation 'com.google.code.gson:gson:2.8.5'
-
+    // retrofit2 及 使用库
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.0.2'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    implementation 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'  //
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.4.1'
+
 }

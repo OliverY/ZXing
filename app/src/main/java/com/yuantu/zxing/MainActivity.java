@@ -18,21 +18,20 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.yuantu.zxing.adapter.ProductAdapter;
 import com.yuantu.zxing.bean.Product;
 import com.yuantu.zxing.net.ApiFactory;
-import com.yuantu.zxing.net.RetrofitClient;
+import com.yuantu.zxing.net.bean.ApiResponse;
 import com.yuantu.zxing.net.bean.ProductBean;
-import com.yuantu.zxing.net.callback.ApiCallback;
 import com.yuantu.zxing.utils.ToastUtils;
 
 import java.util.ArrayList;
 
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -61,10 +60,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         product = new Product();
 
+        product.main = "2-136-001-20180702-002";
 //        product.main = "1-107-012-20180702-019";
-//        product.appendix.add("2-136-012-20180702-009");
-//        product.appendix.add("2-136-012-20180702-010");
-
+        product.appendix.add("2-136-012-20180702-009");
+        product.appendix.add("2-136-012-20180702-010");
 
         initview();
         requestPermission();
@@ -128,12 +127,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.btn_main_scan:
                 scanIndex = SCAN_MAIN;
-//                getProductInfo("1-107-012-20180702-019");
+                getProductInfo("1-107-012-20180702-019");
 
-                new IntentIntegrator(this)
-                        .setOrientationLocked(false)
-                        .setCaptureActivity(ScanActivity.class)
-                        .initiateScan();
+//                new IntentIntegrator(this)
+//                        .setOrientationLocked(false)
+//                        .setCaptureActivity(ScanActivity.class)
+//                        .initiateScan();
                 break;
             case R.id.btn_appendix_scan:
                 scanIndex = SCAN_APPENDIX;
@@ -143,18 +142,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .initiateScan();
                 break;
             case R.id.btn_submit:
-                ApiFactory.bind(product, new ApiCallback<String>() {
+                ApiFactory.bind(product)
+                        .subscribe(new Observer<ApiResponse>() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
 
-                    @Override
-                    public void onSuccess(String s) {
-                        ToastUtils.showShort(MainActivity.this, "绑定成功");
-                    }
+                            }
 
-                    @Override
-                    public void onFailed(String msg) {
-                        ToastUtils.showShort(MainActivity.this, msg);
-                    }
-                });
+                            @Override
+                            public void onNext(ApiResponse apiResponse) {
+                                if (apiResponse.isSuccess()) {
+                                    ToastUtils.showShort(MainActivity.this, "绑定成功");
+                                } else {
+                                    ToastUtils.showShort(MainActivity.this, apiResponse.getMsg());
+                                }
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                ToastUtils.showShort(MainActivity.this, e.getMessage());
+                            }
+
+                            @Override
+                            public void onComplete() {
+
+                            }
+                        });
+
                 break;
         }
 
@@ -193,21 +207,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void getProductInfo(String scanResult) {
 
-        ApiFactory.query(scanResult, new ApiCallback<ProductBean>() {
+        ApiFactory.query(scanResult)
+                .subscribe(new Observer<ProductBean>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-            @Override
-            public void onSuccess(ProductBean productBean) {
-                tvMain.setText(productBean.toString());
+                    }
 
-                product.main = productBean.getBarcode();
-                checkBtnEnable();
-            }
+                    @Override
+                    public void onNext(ProductBean productBean) {
+                        tvMain.setText(productBean.toString());
+                        product.main = productBean.getBarcode();
+                        checkBtnEnable();
+                    }
 
-            @Override
-            public void onFailed(String msg) {
-                ToastUtils.showShort(MainActivity.this, msg);
-            }
-        });
+                    @Override
+                    public void onError(Throwable e) {
+                        ToastUtils.showShort(MainActivity.this, e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
 
     }
 

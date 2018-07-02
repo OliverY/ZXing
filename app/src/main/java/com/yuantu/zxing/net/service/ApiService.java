@@ -4,6 +4,7 @@ import com.yuantu.zxing.bean.Product;
 import com.yuantu.zxing.net.bean.ApiResponse;
 import com.yuantu.zxing.net.bean.ProductBean;
 
+import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -20,9 +21,9 @@ import retrofit2.http.Query;
 public interface ApiService {
 
     @GET("product/query")
-    Call<ApiResponse<ProductBean>> query(@Query("barcode") String barCode);
+    Observable<ApiResponse<ProductBean>> query(@Query("barcode") String barCode);
 
     @POST("product/bind")
-    Call<ApiResponse> bind(@Body Product product);
+    Observable<ApiResponse> bind(@Body Product product);
 
 }

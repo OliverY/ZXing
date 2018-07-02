@@ -1,11 +1,11 @@
 package com.yuantu.zxing.net;
 
-import com.google.gson.Gson;
 import com.yuantu.zxing.bean.Product;
-import com.yuantu.zxing.net.callback.ApiCallback;
+import com.yuantu.zxing.net.bean.ApiResponse;
+import com.yuantu.zxing.net.bean.ProductBean;
 import com.yuantu.zxing.net.service.ApiService;
 
-import okhttp3.RequestBody;
+import io.reactivex.Observable;
 
 /**
  * Author:  Yxj
@@ -19,11 +19,11 @@ public class ApiFactory {
         return RetrofitClient.getInstance().getRetrofit().create(ApiService.class);
     }
 
-    public static void query(String barCode,ApiCallback callback) {
-        getApiService().query(barCode).enqueue(callback);
+    public static Observable<ProductBean> query(String barCode) {
+        return getApiService().query(barCode).map(new HttpResultFunc<ProductBean>()).compose(SchedulerCompat.newThread());
     }
 
-    public static void bind(Product product,ApiCallback callback){
-        getApiService().bind(product).enqueue(callback);
+    public static Observable<ApiResponse> bind(Product product){
+        return getApiService().bind(product).compose(SchedulerCompat.newThread());
     }
 }
