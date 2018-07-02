@@ -26,6 +26,7 @@ import com.yuantu.zxing.bean.Product;
 import com.yuantu.zxing.net.ApiFactory;
 import com.yuantu.zxing.net.bean.ApiResponse;
 import com.yuantu.zxing.net.bean.ProductBean;
+import com.yuantu.zxing.utils.RegExUtils;
 import com.yuantu.zxing.utils.ToastUtils;
 
 import java.util.ArrayList;
@@ -225,18 +226,34 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             if (intentResult.getContents() == null) {
                 ToastUtils.showShort(MainActivity.this, "内容为空");
             } else {
-                ToastUtils.showShort(MainActivity.this, "扫描成功");
                 // ScanResult 为 获取到的字符串
                 String scanResult = intentResult.getContents();
+
+                int resultType = RegExUtils.checkCode(scanResult);
+
+                if (resultType == Constants.MaterialType.TYPE_NONE) {
+                    ToastUtils.showShort(MainActivity.this, "扫码不准确，请重新扫码");
+                    return;
+                }
 
                 Log.e("yxj", "扫码成功::" + scanResult);
 
                 if (scanIndex == SCAN_MAIN) {
+                    if (resultType != Constants.MaterialType.TYPE_PRODUCT) {
+                        ToastUtils.showShort(MainActivity.this, "该产品不是成品，请重新扫码");
+                        return;
+                    }
+
                     resetData();
                     product.main = scanResult;
                     // 查询网络
                     getProductInfo(scanResult);
                 } else if (scanIndex == SCAN_APPENDIX) {
+                    if (resultType != Constants.MaterialType.TYPE_CHILD) {
+                        ToastUtils.showShort(MainActivity.this, "该产品不是原料，请重新扫码");
+                        return;
+                    }
+
                     scanChildProduct(scanResult);
                     checkBtnEnable();
                 }
