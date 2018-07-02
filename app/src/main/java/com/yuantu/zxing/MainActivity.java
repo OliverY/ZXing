@@ -26,7 +26,7 @@ import com.yuantu.zxing.bean.Product;
 import com.yuantu.zxing.net.ApiFactory;
 import com.yuantu.zxing.net.bean.ApiResponse;
 import com.yuantu.zxing.net.bean.ProductBean;
-import com.yuantu.zxing.net.bean.ProductDetail;
+import com.yuantu.zxing.test.TestActivity;
 import com.yuantu.zxing.utils.ToastUtils;
 
 import java.util.ArrayList;
@@ -56,8 +56,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int scanIndex;
 
     private List<ProductBean> total;
-    private List<ProductBean> bindedList = new ArrayList<>();
-    private List<ProductBean> addList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,10 +64,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         product = new Product();
 
-        product.main = "2-136-001-20180702-002";
+//        product.main = "2-136-001-20180702-002";
 //        product.main = "1-107-012-20180702-019";
-        product.appendix.add("2-136-012-20180702-009");
-        product.appendix.add("2-136-012-20180702-010");
+//        product.appendix.add("2-136-012-20180702-009");
+//        product.appendix.add("2-136-012-20180702-010");
 
         initview();
         requestPermission();
@@ -89,18 +87,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ry.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         adapter = new ProductAdapter();
         adapter.setOnItemClickListener((BaseQuickAdapter adapter, View view, int position) -> {
-            if(total.get(position).getType() != 1){
+            if (total.get(position).getType() != 1) {
                 new AlertDialog.Builder(MainActivity.this)
                         .setTitle("是否删除该原料")
                         .setPositiveButton("删除", (DialogInterface dialog, int which) -> {
                             // 删除该项
 
-//                            adapter.setNewData(product);
-//                            checkBtnEnable();
-//                            dialog.dismiss();
-                        }).setNegativeButton("取消", (DialogInterface dialog, int which) -> {
+                            total.remove(position);
+                            adapter.notifyItemRemoved(position);
+
+                            checkBtnEnable();
                             dialog.dismiss();
-                        }).show();
+                        }).setNegativeButton("取消", (DialogInterface dialog, int which) -> {
+                    dialog.dismiss();
+                }).show();
             }
         });
         TextView emptyView = new TextView(this);
@@ -137,12 +137,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_main_scan:
                 scanIndex = SCAN_MAIN;
 //                getProductInfo("1-107-012-20180702-019");
-                getChildDevices(13);
+//                getChildDevices(13);
+//                startActivity(new Intent(this, TestActivity.class));
 
-//                new IntentIntegrator(this)
-//                        .setOrientationLocked(false)
-//                        .setCaptureActivity(ScanActivity.class)
-//                        .initiateScan();
+                new IntentIntegrator(this)
+                        .setOrientationLocked(false)
+                        .setCaptureActivity(ScanActivity.class)
+                        .initiateScan();
                 break;
             case R.id.btn_appendix_scan:
                 scanIndex = SCAN_APPENDIX;
@@ -152,8 +153,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .initiateScan();
                 break;
             case R.id.btn_submit:
-                for(ProductBean productBean:addList){
-                    product.appendix.add(productBean.getBarcode());
+                for (ProductBean productBean : total) {
+                    if (productBean.getType() != 1) {
+                        product.appendix.add(productBean.getBarcode());
+                    }
                 }
 
                 ApiFactory.bind(product)
@@ -214,7 +217,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                    adapter.setNewData(product.appendix);
 
                     scanChildProduct(scanResult);
-
                     checkBtnEnable();
 
                 }
@@ -225,16 +227,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void scanChildProduct(String scanResult) {
-        for(ProductBean product:bindedList){
-            if(scanResult.equals(product.getBarcode())){
-                ToastUtils.showShort(MainActivity.this,"此原料已绑定");
-                return;
-            }
-        }
-
-        for(ProductBean product:addList){
-            if(scanResult.equals(product.getBarcode())){
-                ToastUtils.showShort(MainActivity.this,"此原料已在待添加列表中");
+        // 检查重复
+        for (ProductBean product : total) {
+            if (scanResult.equals(product.getBarcode())) {
+                if (product.getType() == 1) {
+                    ToastUtils.showShort(MainActivity.this, "此原料已绑定");
+                } else {
+                    ToastUtils.showShort(MainActivity.this, "此原料已在待添加列表中");
+                }
                 return;
             }
         }
@@ -249,11 +249,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     @Override
                     public void onNext(ProductBean productBean) {
-                        addList.add(0,productBean);
-                        total.clear();
-                        total.addAll(addList);
-                        total.addAll(bindedList);
-                        adapter.setNewData(total);
+                        total.add(0, productBean);
+                        adapter.notifyItemInserted(0);
                     }
 
                     @Override
@@ -311,11 +308,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     @Override
                     public void onNext(List<ProductBean> childDevicesBeans) {
-                        for(ProductBean product:childDevicesBeans){
+                        for (ProductBean product : childDevicesBeans) {
                             product.setType(1);
                         }
-                        bindedList = childDevicesBeans;
-                        total = bindedList;
+                        total = childDevicesBeans;
                         adapter.setNewData(total);
                     }
 
@@ -341,13 +337,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void checkSubmitEnable() {
-        btnSubmit.setEnabled(product.appendix.size() > 0);
+        if (total != null) {
+            for (ProductBean productBean : total) {
+                if (productBean.getType() == 1) {
+                    btnSubmit.setEnabled(true);
+                    return;
+                }
+            }
+        }
+        btnSubmit.setEnabled(false);
+
     }
 
-    private void resetData(){
+    private void resetData() {
         total = new ArrayList<>();
-        bindedList = new ArrayList<>();
-        addList = new ArrayList<>();
         product = new Product();
     }
 

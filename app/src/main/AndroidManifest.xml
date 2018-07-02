@@ -20,9 +20,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ScanActivity">
-
-        </activity>
+        <activity android:name=".ScanActivity"/>
+        <activity android:name=".test.TestActivity"/>
+        <activity android:name=".test.RyActivity"/>
     </application>
 
 </manifest>
