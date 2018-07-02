@@ -4,11 +4,15 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.yuantu.zxing.bean.Product;
-import com.yuantu.zxing.net.callback.BeanCallback;
+import com.yuantu.zxing.net.bean.ProductBean;
+import com.yuantu.zxing.net.callback.ObjectCallback;
 import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.Callback;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import okhttp3.Call;
 import okhttp3.MediaType;
+import okhttp3.Response;
 
 /**
  * Author:  Yxj
@@ -18,9 +22,10 @@ import okhttp3.MediaType;
  */
 public class Api {
 
-    private static final String BASE_URL = "http://ngrok.yuantutech.com:65000/jszx";
+//    private static final String BASE_URL = "http://ngrok.yuantutech.com:65000/jszx";
+    private static final String BASE_URL = "http://120.55.185.136:8090/jszx";
 
-    public static void query(String id,StringCallback callback){
+    public static void query(String id,ObjectCallback<ProductBean> callback){
         String url = BASE_URL+"/product/query";
         OkHttpUtils
                 .get()
@@ -28,6 +33,7 @@ public class Api {
                 .addParams("barcode",id)
                 .build()
                 .execute(callback);
+
     }
 
     /**

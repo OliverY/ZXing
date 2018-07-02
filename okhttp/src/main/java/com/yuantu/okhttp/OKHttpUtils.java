@@ -3,6 +3,9 @@ package com.yuantu.okhttp;
 import android.util.Log;
 import android.webkit.WebView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 
@@ -68,6 +71,38 @@ public class OKHttpUtils {
                 .url(url)
                 .build();
         Call call = client.newCall(request);
-        call.enqueue(callback);
+//        call.enqueue(callback);
+
+        call.enqueue(new ApiCallback<ApiResponse<LoginBean>>(new ApiCallback.Callback<ApiResponse<LoginBean>>() {
+            @Override
+            public void onSuccess(ApiResponse<LoginBean> apiResponse) {
+                Log.e("yxj",apiResponse.toString());
+            }
+
+            @Override
+            public void onFailed(String msg) {
+
+            }
+        }));
+
+//        call.enqueue(new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                String result = response.body().string();
+//                Gson gson = new Gson();
+//                ApiResponse<LoginBean> apiResponse = gson.fromJson(result,new TypeToken<ApiResponse<LoginBean>>(){}.getType());
+//                LoginBean loginBean = apiResponse.getData();
+//                apiResponse.isSuccess();
+//
+//
+//            }
+//        });
     }
+
+
 }

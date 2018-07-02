@@ -18,15 +18,16 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.yuantu.zxing.adapter.ProductAdapter;
 import com.yuantu.zxing.bean.Product;
 import com.yuantu.zxing.net.Api;
-import com.yuantu.zxing.net.callback.BeanCallback;
 import com.yuantu.zxing.net.bean.ProductBean;
 import com.yuantu.zxing.net.callback.ApiCallback;
+import com.yuantu.zxing.net.callback.ObjectCallback;
 import com.yuantu.zxing.utils.ToastUtils;
 
 import java.util.ArrayList;
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         product = new Product();
 
-//        product.main = "1-06b-003-20180629-055";
+        product.main = "1-06b-003-20180629-055";
 //        product.appendix.add("1-06b-003-20180629-056");
 //        product.appendix.add("1-06b-003-20180629-057");
 
@@ -93,9 +94,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }).show();
         });
         TextView emptyView = new TextView(this);
-        emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         emptyView.setGravity(Gravity.CENTER);
-        emptyView.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
+        emptyView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         emptyView.setText("暂未添加原料");
         adapter.bindToRecyclerView(ry);
         adapter.setEmptyView(emptyView);
@@ -125,12 +126,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.btn_main_scan:
                 scanIndex = SCAN_MAIN;
-//                getProductInfo("1-06b-003-20180629-055");
+                getProductInfo("1-107-001-20180702-004");
 
-                new IntentIntegrator(this)
-                        .setOrientationLocked(false)
-                        .setCaptureActivity(ScanActivity.class)
-                        .initiateScan();
+//                new IntentIntegrator(this)
+//                        .setOrientationLocked(false)
+//                        .setCaptureActivity(ScanActivity.class)
+//                        .initiateScan();
                 break;
             case R.id.btn_appendix_scan:
                 scanIndex = SCAN_APPENDIX;
@@ -142,18 +143,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_submit:
                 Api.bind(product, new ApiCallback() {
                     @Override
-                    protected Callback getCallback() {
-                        return new Callback() {
-                            @Override
-                            public void onResponse(String jsonStr) {
-                                ToastUtils.showShort(MainActivity.this, "绑定成功");
-                            }
+                    public void onSuccess(String jsonStr) {
+                        ToastUtils.showShort(MainActivity.this, "绑定成功");
+                    }
 
-                            @Override
-                            public void onError(String msg) {
-                                ToastUtils.showShort(MainActivity.this, msg);
-                            }
-                        };
+                    @Override
+                    public void onFailed(String msg) {
+                        ToastUtils.showShort(MainActivity.this, msg);
                     }
                 });
                 break;
@@ -167,9 +163,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (intentResult != null) {
             if (intentResult.getContents() == null) {
-                ToastUtils.showShort(MainActivity.this,"内容为空");
+                ToastUtils.showShort(MainActivity.this, "内容为空");
             } else {
-                ToastUtils.showShort(MainActivity.this,"扫描成功");
+                ToastUtils.showShort(MainActivity.this, "扫描成功");
                 // ScanResult 为 获取到的字符串
                 String scanResult = intentResult.getContents();
 
@@ -194,32 +190,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void getProductInfo(String scanResult) {
 
-        Api.query(scanResult, new BeanCallback<ProductBean>() {
+        Api.query(scanResult, new ObjectCallback<ProductBean>() {
             @Override
-            protected Class<ProductBean> getBeanClass() {
-                return ProductBean.class;
+            public ProductBean parseJsonObject(String json) {
+                return new Gson().fromJson(json, ProductBean.class);
             }
 
             @Override
-            protected ObjCallback<ProductBean> getObjCallback() {
-                return new ObjCallback<ProductBean>() {
-                    @Override
-                    public void onResponse(ProductBean productBean) {
-                        tvMain.setText(productBean.toString());
+            public void onObjectSuccess(ProductBean productBean) {
+                tvMain.setText(productBean.toString());
 
-                        product.main = productBean.getBarcode();
-                        checkBtnEnable();
-                    }
+                product.main = productBean.getBarcode();
+                checkBtnEnable();
+            }
 
-                    @Override
-                    public void onError(String msg) {
-                        ToastUtils.showShort(MainActivity.this,msg);
-                    }
-                };
+            @Override
+            public void onObjectFailed(String msg) {
+                ToastUtils.showShort(MainActivity.this, msg);
             }
         });
-
-
 
     }
 

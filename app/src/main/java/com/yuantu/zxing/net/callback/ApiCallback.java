@@ -1,6 +1,6 @@
 package com.yuantu.zxing.net.callback;
 
-import com.google.gson.Gson;
+
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONException;
@@ -16,9 +16,13 @@ import okhttp3.Call;
  */
 public abstract class ApiCallback extends StringCallback {
 
+    public abstract void onSuccess(String jsonStr);
+
+    public abstract void onFailed(String msg);
+
     @Override
     public void onError(Call call, Exception e, int id) {
-        getCallback().onError(e.getMessage());
+        onFailed(e.getMessage());
     }
 
     @Override
@@ -27,21 +31,14 @@ public abstract class ApiCallback extends StringCallback {
             JSONObject jsonObject = new JSONObject(response);
             boolean success = jsonObject.getBoolean("success");
             if(success){
-                getCallback().onResponse(jsonObject.getString("data"));
+                onSuccess(jsonObject.getString("data"));
             }else {
-                getCallback().onError(jsonObject.getString("msg"));
+                onFailed(jsonObject.getString("msg"));
             }
         } catch (JSONException e) {
             e.printStackTrace();
-            getCallback().onError(e.getMessage());
+            onFailed(e.getMessage());
         }
-    }
-
-    protected abstract Callback getCallback();
-
-    public interface Callback{
-        void onResponse(String jsonStr);
-        void onError(String msg);
     }
 
 }
