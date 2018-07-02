@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -39,7 +38,7 @@ import io.reactivex.functions.Consumer;
 /**
  * 记得改写成clean mvp
  */
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private TextView tvMain;
     private RecyclerView ryAdd;
@@ -154,6 +153,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
                     }
                 });
+
     }
 
     @Override
@@ -182,6 +182,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     product.appendix.add(productBean.getBarcode());
                 }
 
+                showProgress();
                 ApiFactory.bind(product)
                         .subscribe(new Observer<ApiResponse>() {
                             @Override
@@ -191,6 +192,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                             @Override
                             public void onNext(ApiResponse apiResponse) {
+                                dismissProgress();
                                 if (apiResponse.isSuccess()) {
                                     ToastUtils.showShort(MainActivity.this, "绑定成功");
                                 } else {
@@ -200,6 +202,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                             @Override
                             public void onError(Throwable e) {
+                                dismissProgress();
                                 ToastUtils.showShort(MainActivity.this, e.getMessage());
                             }
 
@@ -256,6 +259,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
 
+        showProgress();
+
         // 查询子条目的信息
         ApiFactory.query(scanResult)
                 .subscribe(new Observer<ProductBean>() {
@@ -266,12 +271,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     @Override
                     public void onNext(ProductBean productBean) {
+                        dismissProgress();
                         addedList.add(0, productBean);
                         addAdapter.notifyItemInserted(0);
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        dismissProgress();
                         ToastUtils.showShort(MainActivity.this, e.getMessage());
                     }
 
@@ -284,6 +291,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void getProductInfo(String scanResult) {
+
+        showProgress();
 
         ApiFactory.query(scanResult)
                 .subscribe(new Observer<ProductBean>() {
@@ -303,6 +312,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     @Override
                     public void onError(Throwable e) {
+                        dismissProgress();
                         ToastUtils.showShort(MainActivity.this, e.getMessage());
                     }
 
@@ -311,7 +321,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     }
                 });
-
 
     }
 
@@ -325,6 +334,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     @Override
                     public void onNext(List<ProductBean> childDevicesBeans) {
+                        dismissProgress();
                         for (ProductBean product : childDevicesBeans) {
                             product.setType(1);
                         }
@@ -334,7 +344,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     @Override
                     public void onError(Throwable e) {
-
+                        dismissProgress();
                     }
 
                     @Override
