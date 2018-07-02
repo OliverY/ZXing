@@ -62,8 +62,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         product = new Product();
 
 //        product.main = "1-107-012-20180702-019";
-//        product.appendix.add("2-136-012-20180702-006");
-//        product.appendix.add("2-136-012-20180702-008");
+//        product.appendix.add("2-136-012-20180702-009");
+//        product.appendix.add("2-136-012-20180702-010");
+
 
         initview();
         requestPermission();
