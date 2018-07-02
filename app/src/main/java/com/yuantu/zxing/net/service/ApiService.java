@@ -3,6 +3,7 @@ package com.yuantu.zxing.net.service;
 import com.yuantu.zxing.bean.Product;
 import com.yuantu.zxing.net.bean.ApiResponse;
 import com.yuantu.zxing.net.bean.ProductBean;
+import com.yuantu.zxing.net.bean.ProductDetail;
 
 import io.reactivex.Observable;
 import retrofit2.Call;
@@ -10,6 +11,7 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -25,5 +27,8 @@ public interface ApiService {
 
     @POST("product/bind")
     Observable<ApiResponse> bind(@Body Product product);
+
+    @GET("product/{id}")
+    Observable<ApiResponse<ProductDetail>> queryChildDevices(@Path("id") int id);
 
 }

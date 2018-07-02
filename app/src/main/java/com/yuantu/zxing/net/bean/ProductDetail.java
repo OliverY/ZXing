@@ -1,13 +1,14 @@
 package com.yuantu.zxing.net.bean;
 
+import java.util.List;
+
 /**
  * Author:  Yxj
- * Time:    2018/6/28 下午1:58
+ * Time:    2018/7/2 下午3:50
  * -----------------------------------------
  * Description:
  */
-public class ProductBean {
-
+public class ProductDetail {
 
     /**
      * createBy : 93
@@ -33,7 +34,7 @@ public class ProductBean {
      * modelName : null
      * printed : false
      * position : null
-     * childDevices : null
+     * childDevices : [{"createBy":93,"createDate":"2018-07-02 10:19:00","updateBy":92,"updateDate":null,"deleted":false,"id":1,"barcode":"2-136-012-20180702-006","name":null,"model":null,"deviceTypeId":136,"deviceTypeName":"主板","hospitalId":8,"parentId":13,"recievingId":1,"inventoryId":4,"produced":false,"troubleCount":null,"areaId":null,"areaName":"华北大区","hospitalName":"威海市中心医院","modelName":null,"printed":false,"position":null,"childDevices":null,"u8BatchNo":"966445"},{"createBy":93,"createDate":"2018-07-02 10:19:00","updateBy":92,"updateDate":null,"deleted":false,"id":2,"barcode":"2-136-012-20180702-007","name":null,"model":null,"deviceTypeId":136,"deviceTypeName":"主板","hospitalId":8,"parentId":13,"recievingId":1,"inventoryId":4,"produced":false,"troubleCount":null,"areaId":null,"areaName":"华北大区","hospitalName":"威海市中心医院","modelName":null,"printed":false,"position":null,"childDevices":null,"u8BatchNo":"966445"},{"createBy":93,"createDate":"2018-07-02 10:19:00","updateBy":92,"updateDate":null,"deleted":false,"id":3,"barcode":"2-136-012-20180702-008","name":null,"model":null,"deviceTypeId":136,"deviceTypeName":"主板","hospitalId":8,"parentId":13,"recievingId":1,"inventoryId":4,"produced":false,"troubleCount":null,"areaId":null,"areaName":"华北大区","hospitalName":"威海市中心医院","modelName":null,"printed":false,"position":null,"childDevices":null,"u8BatchNo":"966445"},{"createBy":93,"createDate":"2018-07-02 10:19:00","updateBy":92,"updateDate":null,"deleted":false,"id":4,"barcode":"2-136-012-20180702-009","name":null,"model":null,"deviceTypeId":136,"deviceTypeName":"主板","hospitalId":8,"parentId":13,"recievingId":1,"inventoryId":4,"produced":false,"troubleCount":null,"areaId":null,"areaName":"华北大区","hospitalName":"威海市中心医院","modelName":null,"printed":false,"position":null,"childDevices":null,"u8BatchNo":"966445"}]
      * u8BatchNo : 567766
      */
 
@@ -60,13 +61,8 @@ public class ProductBean {
     private Object modelName;
     private boolean printed;
     private Object position;
-    private Object childDevices;
     private String u8BatchNo;
-
-    /**
-     * 表示是1：已绑定   2：未绑定
-     */
-    private int type;
+    private List<ProductBean> childDevices;
 
     public int getCreateBy() {
         return createBy;
@@ -252,14 +248,6 @@ public class ProductBean {
         this.position = position;
     }
 
-    public Object getChildDevices() {
-        return childDevices;
-    }
-
-    public void setChildDevices(Object childDevices) {
-        this.childDevices = childDevices;
-    }
-
     public String getU8BatchNo() {
         return u8BatchNo;
     }
@@ -268,22 +256,11 @@ public class ProductBean {
         this.u8BatchNo = u8BatchNo;
     }
 
-    public int getType() {
-        return type;
+    public List<ProductBean> getChildDevices() {
+        return childDevices;
     }
 
-    public void setType(int type) {
-        this.type = type;
-    }
-
-    @Override
-    public String toString() {
-        return "产品简介" + "\r\n" +
-                "产品名称：\t\t" + deviceTypeName + "\r\n" +
-                "产品id：\t\t" + id + "\r\n" +
-                "入库时间：\t\t" + createDate + "\r\n" +
-                "U8批次号：\t\t" + u8BatchNo + "\r\n" +
-                "区域：\t\t" + areaName + "\r\n" +
-                "医院：\t\t" + hospitalName + "\r\n";
+    public void setChildDevices(List<ProductBean> childDevices) {
+        this.childDevices = childDevices;
     }
 }

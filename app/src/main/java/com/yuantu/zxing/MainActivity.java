@@ -26,9 +26,11 @@ import com.yuantu.zxing.bean.Product;
 import com.yuantu.zxing.net.ApiFactory;
 import com.yuantu.zxing.net.bean.ApiResponse;
 import com.yuantu.zxing.net.bean.ProductBean;
+import com.yuantu.zxing.net.bean.ProductDetail;
 import com.yuantu.zxing.utils.ToastUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -52,6 +54,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int SCAN_APPENDIX = 2;
 
     private int scanIndex;
+
+    private List<ProductBean> total;
+    private List<ProductBean> bindedList = new ArrayList<>();
+    private List<ProductBean> addList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,16 +89,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ry.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         adapter = new ProductAdapter();
         adapter.setOnItemClickListener((BaseQuickAdapter adapter, View view, int position) -> {
-            new AlertDialog.Builder(MainActivity.this)
-                    .setTitle("是否删除该原料")
-                    .setPositiveButton("删除", (DialogInterface dialog, int which) -> {
-                        product.appendix.remove(position);
-                        adapter.setNewData(product.appendix);
-                        checkBtnEnable();
-                        dialog.dismiss();
-                    }).setNegativeButton("取消", (DialogInterface dialog, int which) -> {
-                dialog.dismiss();
-            }).show();
+            if(total.get(position).getType() != 1){
+                new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("是否删除该原料")
+                        .setPositiveButton("删除", (DialogInterface dialog, int which) -> {
+                            // 删除该项
+
+//                            adapter.setNewData(product);
+//                            checkBtnEnable();
+//                            dialog.dismiss();
+                        }).setNegativeButton("取消", (DialogInterface dialog, int which) -> {
+                            dialog.dismiss();
+                        }).show();
+            }
         });
         TextView emptyView = new TextView(this);
         emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -127,7 +136,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.btn_main_scan:
                 scanIndex = SCAN_MAIN;
-                getProductInfo("1-107-012-20180702-019");
+//                getProductInfo("1-107-012-20180702-019");
+                getChildDevices(13);
 
 //                new IntentIntegrator(this)
 //                        .setOrientationLocked(false)
@@ -142,6 +152,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .initiateScan();
                 break;
             case R.id.btn_submit:
+                for(ProductBean productBean:addList){
+                    product.appendix.add(productBean.getBarcode());
+                }
+
                 ApiFactory.bind(product)
                         .subscribe(new Observer<ApiResponse>() {
                             @Override
@@ -189,20 +203,70 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Log.e("yxj", "扫码成功::" + scanResult);
 
                 if (scanIndex == SCAN_MAIN) {
+                    resetData();
+
                     product.main = scanResult;
-                    product.appendix = new ArrayList<>();
                     // 查询网络
                     getProductInfo(scanResult);
 
                 } else if (scanIndex == SCAN_APPENDIX) {
-                    product.appendix.add(scanResult);
-                    adapter.setNewData(product.appendix);
+//                    product.appendix.add(scanResult);
+//                    adapter.setNewData(product.appendix);
+
+                    scanChildProduct(scanResult);
+
                     checkBtnEnable();
+
                 }
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    private void scanChildProduct(String scanResult) {
+        for(ProductBean product:bindedList){
+            if(scanResult.equals(product.getBarcode())){
+                ToastUtils.showShort(MainActivity.this,"此原料已绑定");
+                return;
+            }
+        }
+
+        for(ProductBean product:addList){
+            if(scanResult.equals(product.getBarcode())){
+                ToastUtils.showShort(MainActivity.this,"此原料已在待添加列表中");
+                return;
+            }
+        }
+
+        // 查询子条目的信息
+        ApiFactory.query(scanResult)
+                .subscribe(new Observer<ProductBean>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(ProductBean productBean) {
+                        addList.add(0,productBean);
+                        total.clear();
+                        total.addAll(addList);
+                        total.addAll(bindedList);
+                        adapter.setNewData(total);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        ToastUtils.showShort(MainActivity.this, e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
     }
 
     private void getProductInfo(String scanResult) {
@@ -219,6 +283,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         tvMain.setText(productBean.toString());
                         product.main = productBean.getBarcode();
                         checkBtnEnable();
+
+                        getChildDevices(productBean.getId());
                     }
 
                     @Override
@@ -235,6 +301,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    private void getChildDevices(int id) {
+        ApiFactory.queryChildDevices(id)
+                .subscribe(new Observer<List<ProductBean>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<ProductBean> childDevicesBeans) {
+                        for(ProductBean product:childDevicesBeans){
+                            product.setType(1);
+                        }
+                        bindedList = childDevicesBeans;
+                        total = bindedList;
+                        adapter.setNewData(total);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
     private void checkBtnEnable() {
         checkAppendixScanEnable();
         checkSubmitEnable();
@@ -246,6 +342,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void checkSubmitEnable() {
         btnSubmit.setEnabled(product.appendix.size() > 0);
+    }
+
+    private void resetData(){
+        total = new ArrayList<>();
+        bindedList = new ArrayList<>();
+        addList = new ArrayList<>();
+        product = new Product();
     }
 
 
