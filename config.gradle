@@ -1,0 +1,33 @@
+ext {
+    supportVersion = "26.1.0"
+    android = [
+            compileSdkVersion: 26,
+            buildToolsVersion: "27.0.3",
+            minSdkVersion    : 16,
+            targetSdkVersion : 26
+    ]
+
+    dependencies = [
+            appcompatV7            : "com.android.support:appcompat-v7:$supportVersion",
+            constraintLayout       : 'com.android.support.constraint:constraint-layout:1.1.2',
+            // 二维码扫描
+            zxing                  : 'com.google.zxing:core:3.3.3',
+            zxingAndroidEmbedded   : 'com.journeyapps:zxing-android-embedded:3.3.0',
+
+            // rxpermission
+            rxpermissions          : 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.3@aar',
+            rxjava                 : 'io.reactivex.rxjava2:rxjava:2.1.0',
+            rxandroid              : 'io.reactivex.rxjava2:rxandroid:2.0.1',
+
+            // BaseRecyclerViewAdapterHelper
+            recyclerviewV7         : "com.android.support:recyclerview-v7:$supportVersion",
+            BRVAH                  : 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30',
+
+            // okhttp+retrofit
+            gson                   : 'com.google.code.gson:gson:2.8.5',
+            retrofit               : 'com.squareup.retrofit2:retrofit:2.4.0',
+            converterGson          : 'com.squareup.retrofit2:converter-gson:2.4.0',
+            retrofit2Rxjava2Adapter: 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0',
+            logInterceptor         : 'com.squareup.okhttp3:logging-interceptor:3.4.1'
+    ]
+}
