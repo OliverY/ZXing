@@ -7,12 +7,9 @@ import com.yuantu.zxing.bean.Product;
 import com.yuantu.zxing.net.bean.ProductBean;
 import com.yuantu.zxing.net.callback.ObjectCallback;
 import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.Callback;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import okhttp3.Call;
 import okhttp3.MediaType;
-import okhttp3.Response;
 
 /**
  * Author:  Yxj
