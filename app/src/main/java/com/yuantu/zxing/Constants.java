@@ -14,4 +14,8 @@ public class Constants {
         int TYPE_NONE = 3;
     }
 
+    public interface ActivityExtra{
+        String ID = "id";
+    }
+
 }

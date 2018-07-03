@@ -43,19 +43,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private TextView tvMain;
     private RecyclerView ryAdd;
-    private RecyclerView ryBinded;
     private Product product;
     private Button btnMainScan;
     private Button btnAppendixScan;
     private Button btnSubmit;
     private ProductAdapter addAdapter;
-    private ProductBindedAdapter bindedAdapter;
 
     // 代表扫码的入口
     private static final int SCAN_MAIN = 1;
     private static final int SCAN_APPENDIX = 2;
 
     private int scanIndex;
+    private int productId = -1;
 
     private List<ProductBean> addedList = new ArrayList<>();
     private List<ProductBean> bindedList = new ArrayList<>();
@@ -80,19 +79,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         btnMainScan = findViewById(R.id.btn_main_scan);
         btnAppendixScan = findViewById(R.id.btn_appendix_scan);
         btnSubmit = findViewById(R.id.btn_submit);
+        tvMain = findViewById(R.id.tv_main);
+        ryAdd = findViewById(R.id.ry_add);
         btnMainScan.setOnClickListener(this);
         btnAppendixScan.setOnClickListener(this);
         btnSubmit.setOnClickListener(this);
+        tvMain.setOnClickListener(this);
 
-        tvMain = findViewById(R.id.tv_main);
-        ryAdd = findViewById(R.id.ry_add);
-        ryBinded = findViewById(R.id.ry_binded);
-
-        initRyBinded();
         initRyAdd();
-
-        btnAppendixScan.setEnabled(false);
-        btnSubmit.setEnabled(false);
 
         checkBtnEnable();
     }
@@ -129,21 +123,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         addAdapter.setNewData(addedList);
     }
 
-    private void initRyBinded() {
-
-        ryBinded.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        bindedAdapter = new ProductBindedAdapter();
-
-        TextView emptyView = new TextView(this);
-        emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        emptyView.setGravity(Gravity.CENTER);
-        emptyView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        emptyView.setText("暂无绑定原料");
-        bindedAdapter.bindToRecyclerView(ryAdd);
-        bindedAdapter.setEmptyView(emptyView);
-        ryBinded.setAdapter(bindedAdapter);
-    }
-
     private void requestPermission() {
         new RxPermissions(this)
                 .request(Manifest.permission.CAMERA)
@@ -178,6 +157,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         .setOrientationLocked(false)
                         .setCaptureActivity(ScanActivity.class)
                         .initiateScan();
+                break;
+            case R.id.tv_main:
+                if(productId == -1){
+                    return;
+                }
+                Intent intent = new Intent(MainActivity.this, BindedActivity.class);
+                intent.putExtra(Constants.ActivityExtra.ID, productId);
+                startActivity(intent);
                 break;
             case R.id.btn_submit:
                 for (ProductBean productBean : addedList) {
@@ -335,6 +322,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         product.main = productBean.getBarcode();
                         checkBtnEnable();
 
+                        productId = productBean.getId();
                         getChildDevices(productBean.getId());
                     }
 
@@ -363,11 +351,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     @Override
                     public void onNext(List<ProductBean> childDevicesBeans) {
                         dismissProgress();
-                        for (ProductBean product : childDevicesBeans) {
-                            product.setType(1);
-                        }
                         bindedList = childDevicesBeans;
-                        bindedAdapter.setNewData(bindedList);
                     }
 
                     @Override
@@ -403,6 +387,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void resetData() {
+        productId = -1;
         bindedList = new ArrayList<>();
         addedList = new ArrayList<>();
         product = new Product();
@@ -410,7 +395,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private void resetUI() {
         addAdapter.notifyDataSetChanged();
-        bindedAdapter.notifyDataSetChanged();
     }
 
 

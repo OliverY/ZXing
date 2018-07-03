@@ -26,6 +26,7 @@
         <activity android:name=".ScanActivity" />
         <activity android:name=".test.TestActivity" />
         <activity android:name=".test.RyActivity" />
+        <activity android:name=".BindedActivity"/>
     </application>
 
 </manifest>
