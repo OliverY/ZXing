@@ -162,14 +162,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.btn_main_scan:
                 scanIndex = SCAN_MAIN;
-                getProductInfo("1-107-012-20180702-019");
+//                getProductInfo("1-107-012-20180702-019");
 //                getChildDevices(13);
 //                startActivity(new Intent(this, TestActivity.class));
 
-//                new IntentIntegrator(this)
-//                        .setOrientationLocked(false)
-//                        .setCaptureActivity(ScanActivity.class)
-//                        .initiateScan();
+                new IntentIntegrator(this)
+                        .setOrientationLocked(false)
+                        .setCaptureActivity(ScanActivity.class)
+                        .initiateScan();
                 break;
             case R.id.btn_appendix_scan:
                 scanIndex = SCAN_APPENDIX;
@@ -279,7 +279,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         showProgress();
 
         // 查询子条目的信息
-        ApiFactory.query(scanResult)
+        ApiFactory.queryMaterial(scanResult)
                 .subscribe(new Observer<ProductBean>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -394,6 +394,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void resetData() {
+        bindedList = new ArrayList<>();
         addedList = new ArrayList<>();
         product = new Product();
     }

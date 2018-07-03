@@ -39,4 +39,8 @@ public class ApiFactory {
             }
         }).compose(SchedulerCompat.newThread());
     }
+
+    public static Observable<ProductBean> queryMaterial(String barCode) {
+        return getApiService().queryMaterial(barCode).map(new HttpResultFunc<ProductBean>()).compose(SchedulerCompat.newThread());
+    }
 }

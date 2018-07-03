@@ -31,4 +31,6 @@ public interface ApiService {
     @GET("product/{id}")
     Observable<ApiResponse<ProductDetail>> queryChildDevices(@Path("id") int id);
 
+    @GET("material/query")
+    Observable<ApiResponse<ProductBean>> queryMaterial(@Query("barcode") String barCode);
 }
