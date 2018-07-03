@@ -17,7 +17,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class RetrofitClient {
 
-    public static String BASE_URL = "http://120.55.185.136:8090/jszx/";
+    public static String BASE_URL = "http://120.55.185.136:8080/jszx/";//生产
+//    public static String BASE_URL = "http://120.55.185.136:8090/jszx/";//测试
     private Retrofit retrofit;
 
     private RetrofitClient(){
