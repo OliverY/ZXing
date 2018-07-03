@@ -273,7 +273,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         // 检查重复
         for (ProductBean product : addedList) {
             if (scanResult.equals(product.getBarcode())) {
-                    ToastUtils.showShort(MainActivity.this, "此原料已在待添加列表中");
+                ToastUtils.showShort(MainActivity.this, "此原料已在待添加列表中");
                 return;
             }
         }

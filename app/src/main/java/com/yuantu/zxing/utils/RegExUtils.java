@@ -13,13 +13,15 @@ import java.util.regex.Pattern;
  */
 public class RegExUtils {
 
-
-
 //    public static void main(String[] args){
 //        String str1 = "2-136-001-2018072-002";
-//        System.out.println(isMaterial(str1));
+//        System.out.println(checkCode(str1));
 //        String str2 = "1-136-001-20180702-0024";
-//        System.out.println(isMaterial(str2));
+//        System.out.println(checkCode(str2));
+//        String str3 = "1-136-001-20180702-002";
+//        System.out.println(checkCode(str3));
+//        String str4 = "1-136-f01-20180702-002";
+//        System.out.println(checkCode(str4));
 //    }
 
     public static boolean isMaterial(String string){
@@ -36,7 +38,7 @@ public class RegExUtils {
      * @return {@link com.yuantu.zxing.Constants.MaterialType}
      */
     public static int checkCode(String string){
-        String regex = "^[1|2]-\\d{3}-\\d{3}-\\d{8}-\\d{3}$";
+        String regex = "^[1|2]-[0-9a-fA-F]{3}-[0-9a-fA-F]{3}-\\d{8}-[0-9a-fA-F]{3}$";
         Pattern pattern = Pattern.compile(regex);
         if(pattern.matcher(string).matches()){
             if(string.startsWith("1")){
