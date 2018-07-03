@@ -24,7 +24,7 @@ public class RegExUtils {
 //        System.out.println(checkCode(str4));
 //    }
 
-    public static boolean isMaterial(String string){
+    public static boolean isMaterial(String string) {
         String regex = "^[1|2]-\\d{3}-\\d{3}-\\d{8}-\\d{3}$";
 
         Pattern pattern = Pattern.compile(regex);
@@ -34,16 +34,17 @@ public class RegExUtils {
 
     /**
      * 校验barcode
+     *
      * @param string
      * @return {@link com.yuantu.zxing.Constants.MaterialType}
      */
-    public static int checkCode(String string){
+    public static int checkCode(String string) {
         String regex = "^[1|2]-[0-9a-fA-F]{3}-[0-9a-fA-F]{3}-\\d{8}-[0-9a-fA-F]{3}$";
         Pattern pattern = Pattern.compile(regex);
-        if(pattern.matcher(string).matches()){
-            if(string.startsWith("1")){
+        if (pattern.matcher(string).matches()) {
+            if (string.startsWith("1")) {
                 return Constants.MaterialType.TYPE_PRODUCT;
-            }else if(string.startsWith("2")){
+            } else if (string.startsWith("2")) {
                 return Constants.MaterialType.TYPE_CHILD;
             }
         }
