@@ -57,8 +57,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private int scanIndex;
 
-    private List<ProductBean> addedList;
-    private List<ProductBean> bindedList;
+    private List<ProductBean> addedList = new ArrayList<>();
+    private List<ProductBean> bindedList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,11 +126,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         addAdapter.bindToRecyclerView(ryAdd);
         addAdapter.setEmptyView(emptyView);
         ryAdd.setAdapter(addAdapter);
+        addAdapter.setNewData(addedList);
     }
 
     private void initRyBinded() {
 
-        ryAdd.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        ryBinded.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         bindedAdapter = new ProductBindedAdapter();
 
         TextView emptyView = new TextView(this);
@@ -209,6 +210,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
                             @Override
                             public void onComplete() {
+                                // 绑定成功后刷新绑定的子元素列表
+                                getProductInfo(product.main);
+                                addedList.clear();
+                                addAdapter.notifyDataSetChanged();
 
                             }
                         });
@@ -245,6 +250,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     }
 
                     resetData();
+                    resetUI();
                     product.main = scanResult;
                     // 查询网络
                     getProductInfo(scanResult);
@@ -267,11 +273,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         // 检查重复
         for (ProductBean product : addedList) {
             if (scanResult.equals(product.getBarcode())) {
-                if (product.getType() == 1) {
-                    ToastUtils.showShort(MainActivity.this, "此原料已绑定");
-                } else {
                     ToastUtils.showShort(MainActivity.this, "此原料已在待添加列表中");
-                }
+                return;
+            }
+        }
+
+        for (ProductBean product : bindedList) {
+            if (scanResult.equals(product.getBarcode())) {
+                ToastUtils.showShort(MainActivity.this, "此原料已绑定");
                 return;
             }
         }
@@ -290,7 +299,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     public void onNext(ProductBean productBean) {
                         dismissProgress();
                         addedList.add(0, productBean);
-                        addAdapter.notifyItemInserted(0);
+                        addAdapter.setNewData(addedList);
+
+                        checkBtnEnable();
                     }
 
                     @Override
@@ -383,10 +394,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private void checkSubmitEnable() {
         if (addedList != null) {
             for (ProductBean productBean : addedList) {
-                if (productBean.getType() == 1) {
-                    btnSubmit.setEnabled(true);
-                    return;
-                }
+                btnSubmit.setEnabled(true);
+                return;
             }
         }
         btnSubmit.setEnabled(false);
@@ -397,6 +406,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         bindedList = new ArrayList<>();
         addedList = new ArrayList<>();
         product = new Product();
+    }
+
+    private void resetUI() {
+        addAdapter.notifyDataSetChanged();
+        bindedAdapter.notifyDataSetChanged();
     }
 
 
