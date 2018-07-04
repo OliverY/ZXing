@@ -22,6 +22,9 @@ public class RegExUtils {
 //        System.out.println(checkCode(str3));
 //        String str4 = "1-136-f01-20180702-002";
 //        System.out.println(checkCode(str4));
+//        String str5 = "1-ab1220081212ab1";
+//        System.out.println(checkCode(str5));
+//
 //    }
 
     public static boolean isMaterial(String string) {
@@ -39,7 +42,7 @@ public class RegExUtils {
      * @return {@link com.yuantu.zxing.Constants.MaterialType}
      */
     public static int checkCode(String string) {
-        String regex = "^[1|2]-[0-9a-fA-F]{3}-[0-9a-fA-F]{3}-\\d{8}-[0-9a-fA-F]{3}$";
+        String regex = "^[1|2]-[0-9a-fA-F]{4}\\d{8}[0-9a-fA-F]{3}$";
         Pattern pattern = Pattern.compile(regex);
         if (pattern.matcher(string).matches()) {
             if (string.startsWith("1")) {
