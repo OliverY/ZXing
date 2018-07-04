@@ -42,7 +42,7 @@ public class RegExUtils {
      * @return {@link com.yuantu.zxing.Constants.MaterialType}
      */
     public static int checkCode(String string) {
-        String regex = "^[1|2]-[0-9a-fA-F]{4}\\d{8}[0-9a-fA-F]{3}$";
+        String regex = "^[1|2][0-9a-fA-F]{3}-[0-9a-fA-F]{4}\\d{8}[0-9a-fA-F]{3}$";
         Pattern pattern = Pattern.compile(regex);
         if (pattern.matcher(string).matches()) {
             if (string.startsWith("1")) {
