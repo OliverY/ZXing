@@ -96,21 +96,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         ryAdd.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         addAdapter = new ProductAdapter();
         addAdapter.setOnItemClickListener((BaseQuickAdapter adapter, View view, int position) -> {
-            if (addedList.get(position).getType() != 1) {
-                new AlertDialog.Builder(MainActivity.this)
-                        .setTitle("是否删除该原料")
-                        .setPositiveButton("删除", (DialogInterface dialog, int which) -> {
-                            // 删除该项
+            new AlertDialog.Builder(MainActivity.this)
+                    .setTitle("是否删除该原料")
+                    .setPositiveButton("删除", (DialogInterface dialog, int which) -> {
+                        // 删除该项
 
-                            addedList.remove(position);
-                            addAdapter.notifyItemRemoved(position);
+                        addedList.remove(position);
+                        addAdapter.notifyItemRemoved(position);
 
-                            checkBtnEnable();
-                            dialog.dismiss();
-                        }).setNegativeButton("取消", (DialogInterface dialog, int which) -> {
-                    dialog.dismiss();
-                }).show();
-            }
+                        checkBtnEnable();
+                        dialog.dismiss();
+                    }).setNegativeButton("取消", (DialogInterface dialog, int which) -> {
+                dialog.dismiss();
+            }).show();
         });
         TextView emptyView = new TextView(this);
         emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -147,6 +145,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 //                startActivity(new Intent(this, TestActivity.class));
 
                 new IntentIntegrator(this)
+                        .addExtra(Constants.ActivityExtra.IS_QR,true)
                         .setOrientationLocked(false)
                         .setCaptureActivity(ScanActivity.class)
                         .initiateScan();
@@ -154,6 +153,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             case R.id.btn_appendix_scan:
                 scanIndex = SCAN_APPENDIX;
                 new IntentIntegrator(this)
+                        .addExtra(Constants.ActivityExtra.IS_QR,false)
                         .setOrientationLocked(false)
                         .setCaptureActivity(ScanActivity.class)
                         .initiateScan();

@@ -20,11 +20,6 @@ public class ProductAdapter extends BaseQuickAdapter<ProductBean,BaseViewHolder>
     @Override
     protected void convert(BaseViewHolder helper, ProductBean item) {
         helper.setText(R.id.tv_detail,item.toString());
-        helper.setText(R.id.tv_type,item.getType()==1?"已绑定":"未绑定");
-        if(item.getType() == 1){
-            helper.getView(R.id.layout).setBackgroundColor(mContext.getResources().getColor(R.color.color_99CC00));
-        }else{
-            helper.getView(R.id.layout).setBackground(mContext.getResources().getDrawable(helper.getLayoutPosition()%2==0?R.drawable.bg_item_even:R.drawable.bg_item_odd));
-        }
+        helper.getView(R.id.layout).setBackground(mContext.getResources().getDrawable(helper.getLayoutPosition()%2==0?R.drawable.bg_item_even:R.drawable.bg_item_odd));
     }
 }

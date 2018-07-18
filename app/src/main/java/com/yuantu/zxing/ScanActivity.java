@@ -24,12 +24,19 @@ public class ScanActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_scan);
+        if(getIntent().getBooleanExtra(Constants.ActivityExtra.IS_QR,true)){
+            setContentView(R.layout.activity_scan_qr);
+        }else{
+            setContentView(R.layout.activity_scan);
+        }
+
         mDBV = findViewById(R.id.dbv);
 
         captureManager = new CaptureManager(this,mDBV);
         captureManager.initializeFromIntent(getIntent(),savedInstanceState);
         captureManager.decode();
+
+        mDBV.setStatusText("请把二维码至于扫描框内");
 
     }
 

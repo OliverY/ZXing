@@ -16,6 +16,7 @@ public class Constants {
 
     public interface ActivityExtra{
         String ID = "id";
+        String IS_QR = "isQR";
     }
 
 }

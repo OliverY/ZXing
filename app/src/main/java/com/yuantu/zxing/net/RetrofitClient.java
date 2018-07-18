@@ -17,8 +17,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class RetrofitClient {
 
-    public static String BASE_URL = "http://120.55.185.136:8080/jszx/";//生产
-//    public static String BASE_URL = "http://120.55.185.136:8090/jszx/";//测试
+//    public static String BASE_URL = "http://120.55.185.136:8080/jszx/";//生产
+    public static String BASE_URL = "http://120.55.185.136:8090/jszx/";//测试
     private Retrofit retrofit;
 
     private RetrofitClient(){
@@ -34,7 +34,7 @@ public class RetrofitClient {
 
     private OkHttpClient createOkHttpClient(){
         HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor();
-        logInterceptor.setLevel(HttpLoggingInterceptor.Level.HEADERS);
+        logInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
 
         return new OkHttpClient.Builder()
                 .addNetworkInterceptor(logInterceptor)

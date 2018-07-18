@@ -11,20 +11,20 @@ public class ProductBean {
 
     /**
      * createBy : 93
-     * createDate : 2018-07-02 10:20:32
+     * createDate : 2018-07-17 16:50:07
      * updateBy : null
      * updateDate : null
      * deleted : false
-     * id : 13
-     * barcode : 1-107-012-20180702-019
+     * id : 5
+     * barcode : 1107-023005180717018
      * name : null
      * model : null
      * deviceTypeId : 107
      * deviceTypeName : YT-DT550
      * hospitalId : 8
      * parentId : 0
-     * recievingId : 2
-     * inventoryId : 5
+     * recievingId : 1
+     * inventoryId : 1
      * produced : true
      * troubleCount : null
      * areaId : null
@@ -34,7 +34,10 @@ public class ProductBean {
      * printed : false
      * position : null
      * childDevices : null
-     * u8BatchNo : 567766
+     * produceDate : 2018-07-17
+     * warrantyDate : null
+     * attachBatchNo : 3123123
+     * attachSerialNo : 3123123005
      */
 
     private int createBy;
@@ -61,12 +64,10 @@ public class ProductBean {
     private boolean printed;
     private Object position;
     private Object childDevices;
-    private String u8BatchNo;
-
-    /**
-     * 表示是1：已绑定   2：未绑定
-     */
-    private int type;
+    private String produceDate;
+    private Object warrantyDate;
+    private String attachBatchNo;
+    private String attachSerialNo;
 
     public int getCreateBy() {
         return createBy;
@@ -260,20 +261,36 @@ public class ProductBean {
         this.childDevices = childDevices;
     }
 
-    public String getU8BatchNo() {
-        return u8BatchNo;
+    public String getProduceDate() {
+        return produceDate;
     }
 
-    public void setU8BatchNo(String u8BatchNo) {
-        this.u8BatchNo = u8BatchNo;
+    public void setProduceDate(String produceDate) {
+        this.produceDate = produceDate;
     }
 
-    public int getType() {
-        return type;
+    public Object getWarrantyDate() {
+        return warrantyDate;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setWarrantyDate(Object warrantyDate) {
+        this.warrantyDate = warrantyDate;
+    }
+
+    public String getAttachBatchNo() {
+        return attachBatchNo;
+    }
+
+    public void setAttachBatchNo(String attachBatchNo) {
+        this.attachBatchNo = attachBatchNo;
+    }
+
+    public String getAttachSerialNo() {
+        return attachSerialNo;
+    }
+
+    public void setAttachSerialNo(String attachSerialNo) {
+        this.attachSerialNo = attachSerialNo;
     }
 
     @Override
@@ -282,8 +299,10 @@ public class ProductBean {
                 "产品名称：\t\t" + deviceTypeName + "\r\n" +
                 "产品id：\t\t" + id + "\r\n" +
                 "入库时间：\t\t" + createDate + "\r\n" +
-                "U8批次号：\t\t" + u8BatchNo + "\r\n" +
+                "批次号：\t\t" + attachBatchNo + "\r\n" +
                 "区域：\t\t" + areaName + "\r\n" +
-                "医院：\t\t" + hospitalName + "\r\n";
+                "医院：\t\t" + hospitalName + "\r\n" +
+                "成品序列号：\t\t" + attachSerialNo + "\r\n" +
+                "生产日期：\t\t" + produceDate + "\r\n";
     }
 }
