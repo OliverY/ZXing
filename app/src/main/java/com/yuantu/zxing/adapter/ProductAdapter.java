@@ -19,7 +19,7 @@ public class ProductAdapter extends BaseQuickAdapter<ProductBean,BaseViewHolder>
 
     @Override
     protected void convert(BaseViewHolder helper, ProductBean item) {
-        helper.setText(R.id.tv_detail,item.toString());
+        helper.setText(R.id.tv_detail,item.toMaterialString());
         helper.getView(R.id.layout).setBackground(mContext.getResources().getDrawable(helper.getLayoutPosition()%2==0?R.drawable.bg_item_even:R.drawable.bg_item_odd));
     }
 }

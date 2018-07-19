@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -89,6 +90,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         initRyAdd();
 
         checkBtnEnable();
+
+        tvMain.setMovementMethod(ScrollingMovementMethod.getInstance());
     }
 
     private void initRyAdd() {

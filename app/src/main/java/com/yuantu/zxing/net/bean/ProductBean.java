@@ -305,4 +305,15 @@ public class ProductBean {
                 "成品序列号：\t\t" + attachSerialNo + "\r\n" +
                 "生产日期：\t\t" + produceDate + "\r\n";
     }
+
+    public String toMaterialString(){
+        return "产品简介" + "\r\n" +
+                "产品名称：\t\t" + deviceTypeName + "\r\n" +
+                "产品id：\t\t" + id + "\r\n" +
+                "入库时间：\t\t" + createDate + "\r\n" +
+                "批次号：\t\t" + attachBatchNo + "\r\n" +
+                "区域：\t\t" + areaName + "\r\n" +
+                "医院：\t\t" + hospitalName + "\r\n" +
+                "生产日期：\t\t" + produceDate + "\r\n";
+    }
 }
