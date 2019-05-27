@@ -44,6 +44,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     testImplementation 'junit:junit:4.12'
     implementation libs.appcompatV7
+    implementation libs.design
     implementation libs.cardView
     implementation libs.constraintLayout
     implementation libs.zxing

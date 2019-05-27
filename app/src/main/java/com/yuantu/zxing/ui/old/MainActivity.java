@@ -1,4 +1,4 @@
-package com.yuantu.zxing;
+package com.yuantu.zxing.ui.old;
 
 import android.Manifest;
 import android.content.DialogInterface;
@@ -21,8 +21,10 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.yuantu.zxing.BaseActivity;
+import com.yuantu.zxing.Constants;
+import com.yuantu.zxing.R;
 import com.yuantu.zxing.adapter.ProductAdapter;
-import com.yuantu.zxing.adapter.ProductBindedAdapter;
 import com.yuantu.zxing.bean.Product;
 import com.yuantu.zxing.net.ApiFactory;
 import com.yuantu.zxing.net.bean.ApiResponse;

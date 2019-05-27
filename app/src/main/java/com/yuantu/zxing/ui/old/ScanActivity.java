@@ -1,4 +1,4 @@
-package com.yuantu.zxing;
+package com.yuantu.zxing.ui.old;
 
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -8,6 +8,8 @@ import android.view.KeyEvent;
 
 import com.journeyapps.barcodescanner.CaptureManager;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
+import com.yuantu.zxing.Constants;
+import com.yuantu.zxing.R;
 
 /**
  * Author:  Yxj

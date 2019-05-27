@@ -1,4 +1,4 @@
-package com.yuantu.zxing;
+package com.yuantu.zxing.ui.old;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +9,9 @@ import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.yuantu.zxing.BaseActivity;
+import com.yuantu.zxing.Constants;
+import com.yuantu.zxing.R;
 import com.yuantu.zxing.adapter.ProductBindedAdapter;
 import com.yuantu.zxing.net.ApiFactory;
 import com.yuantu.zxing.net.bean.ProductBean;

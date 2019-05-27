@@ -1,6 +1,7 @@
 package com.yuantu.zxing.net;
 
 import com.yuantu.zxing.bean.Product;
+import com.yuantu.zxing.bean.SchedulerBean;
 import com.yuantu.zxing.net.bean.ApiResponse;
 import com.yuantu.zxing.net.bean.ProductBean;
 import com.yuantu.zxing.net.bean.ProductDetail;
@@ -43,4 +44,13 @@ public class ApiFactory {
     public static Observable<ProductBean> queryMaterial(String barCode) {
         return getApiService().queryMaterial(barCode).map(new HttpResultFunc<ProductBean>()).compose(SchedulerCompat.newThread());
     }
+
+    public static Observable<ApiResponse> login(String email,String password) {
+        return getApiService().login(email,password).compose(SchedulerCompat.newThread());
+    }
+
+    public static Observable<List<SchedulerBean>> getProducePlanProcess(int planStatus) {
+        return getApiService().getProducePlanProcess(planStatus).map(new HttpResultFunc<List<SchedulerBean>>()).compose(SchedulerCompat.newThread());
+    }
+
 }
