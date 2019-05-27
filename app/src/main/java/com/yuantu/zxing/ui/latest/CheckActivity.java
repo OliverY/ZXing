@@ -6,10 +6,12 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 
+import com.yuantu.zxing.AppConfig;
 import com.yuantu.zxing.BaseActivity;
 import com.yuantu.zxing.Constants;
 import com.yuantu.zxing.R;
 import com.yuantu.zxing.adapter.CheckVPAdatper;
+import com.yuantu.zxing.bean.ConfigBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,26 +42,23 @@ public class CheckActivity extends BaseActivity {
 
     private void init() {
 
-        List<String> titles = new ArrayList<>();
-        titles.add("进行中");
-        titles.add("已完成");
+//        List<String> titles = new ArrayList<>();
+//        titles.add("进行中");
+//        titles.add("已完成");
+//        titles.add("已取消");
 
+        List<ConfigBean.Config> configList = AppConfig.getInstance().getConfigBean().getTypeId_121();
         List<Fragment> fragmentList = new ArrayList<>();
 
+        for (int i = 0; i < configList.size(); i++) {
+            Bundle bundle = new Bundle();
+            bundle.putInt(Constants.ActivityExtra.PLAN_STATUS,configList.get(i).getId());
+            CheckFragment checkFragment1 = new CheckFragment();
+            checkFragment1.setArguments(bundle);
+            fragmentList.add(checkFragment1);
+        }
 
-        Bundle bundle1 = new Bundle();
-        bundle1.putInt(Constants.ActivityExtra.PLAN_STATUS,1);
-        CheckFragment checkFragment1 = new CheckFragment();
-        checkFragment1.setArguments(bundle1);
-        fragmentList.add(checkFragment1);
-
-        Bundle bundle2 = new Bundle();
-        bundle2.putInt(Constants.ActivityExtra.PLAN_STATUS,2);
-        CheckFragment checkFragment2 = new CheckFragment();
-        checkFragment2.setArguments(bundle2);
-        fragmentList.add(checkFragment2);
-
-        CheckVPAdatper adatper = new CheckVPAdatper(titles,fragmentList,getSupportFragmentManager());
+        CheckVPAdatper adatper = new CheckVPAdatper(configList,fragmentList,getSupportFragmentManager());
         viewPager.setAdapter(adatper);
 
         tabLayout.setupWithViewPager(viewPager);

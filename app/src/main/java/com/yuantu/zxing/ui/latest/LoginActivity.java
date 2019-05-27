@@ -1,5 +1,7 @@
 package com.yuantu.zxing.ui.latest;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -12,6 +14,8 @@ import com.yuantu.zxing.common.widget.CircleProgressIndicator;
 import com.yuantu.zxing.common.widget.LinearProgressIndicator;
 import com.yuantu.zxing.net.ApiFactory;
 import com.yuantu.zxing.net.bean.ApiResponse;
+import com.yuantu.zxing.utils.ProgressUtils;
+import com.yuantu.zxing.utils.ToastUtils;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -27,8 +31,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private EditText etEmail;
     private EditText etPwd;
     private Button btnLogin;
-    private CircleProgressIndicator circleProgressIndicator;
-    private LinearProgressIndicator linearProgressIndicator;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,10 +42,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         etEmail = findViewById(R.id.et_email);
         etPwd = findViewById(R.id.et_password);
         btnLogin = findViewById(R.id.btn_login);
-        circleProgressIndicator = findViewById(R.id.circle_indicator);
-        linearProgressIndicator = findViewById(R.id.linear_indicator);
 
-
+        etEmail.setText("admin@yuantutech.com");
+        etPwd.setText("admin");
 
         btnLogin.setOnClickListener(this);
 
@@ -52,35 +54,40 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_login:
-//                String email = etEmail.getText().toString().trim();
-//                String pwd = etPwd.getText().toString().trim();
-//
-//                ApiFactory.login(email,pwd)
-//                        .subscribe(new Observer<ApiResponse>() {
-//                            @Override
-//                            public void onSubscribe(Disposable d) {
-//
-//                            }
-//
-//                            @Override
-//                            public void onNext(ApiResponse apiResponse) {
-//
-//                            }
-//
-//                            @Override
-//                            public void onError(Throwable e) {
-//
-//                            }
-//
-//                            @Override
-//                            public void onComplete() {
-//
-//                            }
-//                        });
+                String email = etEmail.getText().toString().trim();
+                String pwd = etPwd.getText().toString().trim();
 
-//                circleProgressIndicator.setData(150,30,R.color.color_6D81FD,"设备总数");
+                progressDialog = ProgressUtils.show(this);
 
-                linearProgressIndicator.setIndex(9);
+                ApiFactory.login(email,pwd)
+                        .subscribe(new Observer<ApiResponse>() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
+
+                            }
+
+                            @Override
+                            public void onNext(ApiResponse apiResponse) {
+                                progressDialog.dismiss();
+                                if(apiResponse.isSuccess()){
+                                    startActivity(new Intent(LoginActivity.this,HomeActivity.class));
+                                    finish();
+                                }else {
+                                    ToastUtils.showShort(LoginActivity.this,"登录失败");
+                                }
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                progressDialog.dismiss();
+                                ToastUtils.showShort(LoginActivity.this,"登录失败");
+                            }
+
+                            @Override
+                            public void onComplete() {
+
+                            }
+                        });
 
                 break;
         }

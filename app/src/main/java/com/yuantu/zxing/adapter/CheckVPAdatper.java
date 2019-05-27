@@ -6,6 +6,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 
+import com.yuantu.zxing.bean.ConfigBean;
+
 import java.util.List;
 
 /**
@@ -16,12 +18,12 @@ import java.util.List;
  */
 public class CheckVPAdatper extends FragmentPagerAdapter {
 
-    List<String> titles;
+    List<ConfigBean.Config> configList;
     List<Fragment> fragmentList;
 
-    public CheckVPAdatper(List<String> titles,List<Fragment> fragmentList, FragmentManager fm) {
+    public CheckVPAdatper(List<ConfigBean.Config> configList, List<Fragment> fragmentList, FragmentManager fm) {
         super(fm);
-        this.titles = titles;
+        this.configList = configList;
         this.fragmentList = fragmentList;
     }
 
@@ -42,6 +44,6 @@ public class CheckVPAdatper extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return titles.get(position);
+        return configList.get(position).getDescribe();
     }
 }

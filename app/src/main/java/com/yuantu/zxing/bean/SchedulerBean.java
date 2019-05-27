@@ -8,15 +8,43 @@ package com.yuantu.zxing.bean;
  */
 public class SchedulerBean {
 
+    /**
+     * id : 23
+     * projectName : 青岛市妇女儿童医院
+     * projectId : 1
+     * deviceType : 1
+     * deviceNumber : 2
+     * moduleInstalled : 0
+     * deviceWired : 0
+     * deviceTested : 0
+     * planStatus : 1
+     * operateUser : 93
+     * startTime : 2019-05-27
+     * endTime : null
+     * deviceTypeName : null
+     * progress : 0
+     * rate : 0%
+     * deviceTypeDesc : 自助机
+     * planStatusDesc : 进行中
+     */
+
     private int id;
-    private String projectName; // 医院名称
-    private String deviceTypeDesc;  // 设备类型 诊间屏
-    private int deviceNumber; // 设备总数
-    private int moduleInstalled;  // 模块安装
-    private int deviceWired;  // 设备布线
-    private int deviceTested; // 设备测试
-    private String rate;// 进度
-    private String startTime;// 开始时间
+    private String projectName;
+    private int projectId;
+    private int deviceType;
+    private int deviceNumber;
+    private int moduleInstalled;
+    private int deviceWired;
+    private int deviceTested;
+    private int planStatus;
+    private int operateUser;
+    private String startTime;
+    private String endTime;
+    private String deviceTypeName;
+    private int progress;
+    private String rate;
+    private String deviceTypeDesc;
+    private String planStatusDesc;
 
     public int getId() {
         return id;
@@ -34,12 +62,20 @@ public class SchedulerBean {
         this.projectName = projectName;
     }
 
-    public String getDeviceTypeDesc() {
-        return deviceTypeDesc;
+    public int getProjectId() {
+        return projectId;
     }
 
-    public void setDeviceTypeDesc(String deviceTypeDesc) {
-        this.deviceTypeDesc = deviceTypeDesc;
+    public void setProjectId(int projectId) {
+        this.projectId = projectId;
+    }
+
+    public int getDeviceType() {
+        return deviceType;
+    }
+
+    public void setDeviceType(int deviceType) {
+        this.deviceType = deviceType;
     }
 
     public int getDeviceNumber() {
@@ -74,12 +110,20 @@ public class SchedulerBean {
         this.deviceTested = deviceTested;
     }
 
-    public String getRate() {
-        return rate;
+    public int getPlanStatus() {
+        return planStatus;
     }
 
-    public void setRate(String rate) {
-        this.rate = rate;
+    public void setPlanStatus(int planStatus) {
+        this.planStatus = planStatus;
+    }
+
+    public int getOperateUser() {
+        return operateUser;
+    }
+
+    public void setOperateUser(int operateUser) {
+        this.operateUser = operateUser;
     }
 
     public String getStartTime() {
@@ -88,5 +132,53 @@ public class SchedulerBean {
 
     public void setStartTime(String startTime) {
         this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getDeviceTypeName() {
+        return deviceTypeName;
+    }
+
+    public void setDeviceTypeName(String deviceTypeName) {
+        this.deviceTypeName = deviceTypeName;
+    }
+
+    public int getProgress() {
+        return progress;
+    }
+
+    public void setProgress(int progress) {
+        this.progress = progress;
+    }
+
+    public String getRate() {
+        return rate;
+    }
+
+    public void setRate(String rate) {
+        this.rate = rate;
+    }
+
+    public String getDeviceTypeDesc() {
+        return deviceTypeDesc;
+    }
+
+    public void setDeviceTypeDesc(String deviceTypeDesc) {
+        this.deviceTypeDesc = deviceTypeDesc;
+    }
+
+    public String getPlanStatusDesc() {
+        return planStatusDesc;
+    }
+
+    public void setPlanStatusDesc(String planStatusDesc) {
+        this.planStatusDesc = planStatusDesc;
     }
 }

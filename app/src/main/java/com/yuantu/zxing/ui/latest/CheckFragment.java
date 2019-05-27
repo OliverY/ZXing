@@ -19,6 +19,7 @@ import com.yuantu.zxing.bean.SchedulerBean;
 import com.yuantu.zxing.net.ApiFactory;
 import com.yuantu.zxing.utils.ToastUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observer;
@@ -32,7 +33,7 @@ import io.reactivex.disposables.Disposable;
  */
 public class CheckFragment extends Fragment {
 
-    private SwipeRefreshLayout refreshLayout;
+//    private SwipeRefreshLayout refreshLayout;
     private RecyclerView recyclerView;
     private CheckListAdapter adapter;
 
@@ -51,54 +52,70 @@ public class CheckFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        refreshLayout = view.findViewById(R.id.refresh_layout);
+//        refreshLayout = view.findViewById(R.id.refresh_layout);
         recyclerView = view.findViewById(R.id.recycler_view);
 
         adapter = new CheckListAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-//        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),));
+//        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL);
+//        dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.recycler_view_divider));
+//        recyclerView.addItemDecoration(dividerItemDecoration);
         recyclerView.setAdapter(adapter);
 
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                requestData();
-            }
-        });
+//        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                requestData();
+//            }
+//        });
         initData();
     }
 
     private void initData() {
-        refreshLayout.setRefreshing(true);
+//        refreshLayout.setRefreshing(true);
 
         requestData();
     }
 
     private void requestData() {
-        ApiFactory.getProducePlanProcess(planStatus)
-                .subscribe(new Observer<List<SchedulerBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
+        List<SchedulerBean> schedulerBeans = new ArrayList<>();
+        schedulerBeans.add(new SchedulerBean());
+        schedulerBeans.add(new SchedulerBean());
+        schedulerBeans.add(new SchedulerBean());
+        schedulerBeans.add(new SchedulerBean());
+        schedulerBeans.add(new SchedulerBean());
+        schedulerBeans.add(new SchedulerBean());
+        schedulerBeans.add(new SchedulerBean());
+        schedulerBeans.add(new SchedulerBean());
+        schedulerBeans.add(new SchedulerBean());
 
-                    }
+        adapter.setNewData(schedulerBeans);
 
-                    @Override
-                    public void onNext(List<SchedulerBean> schedulerBeans) {
-                        refreshLayout.setRefreshing(false);
-                        adapter.setNewData(schedulerBeans);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        refreshLayout.setRefreshing(false);
-                        ToastUtils.showShort(getContext(),"获取数据失败");
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+//        ApiFactory.getProducePlanProcess(planStatus)
+//                .subscribe(new Observer<List<SchedulerBean>>() {
+//                    @Override
+//                    public void onSubscribe(Disposable d) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(List<SchedulerBean> schedulerBeans) {
+//                        refreshLayout.setRefreshing(false);
+//
+//                        adapter.setNewData(schedulerBeans);
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        refreshLayout.setRefreshing(false);
+//                        ToastUtils.showShort(getContext(),"获取数据失败");
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//
+//                    }
+//                });
 
     }
 }

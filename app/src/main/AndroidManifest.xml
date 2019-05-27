@@ -29,6 +29,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.latest.HomeActivity"/>
+        <activity android:name=".ui.latest.LoggingActivity"/>
+        <activity android:name=".ui.latest.Home2Activity"/>
+        <activity android:name=".ui.latest.CheckActivity"/>
     </application>
 
 </manifest>

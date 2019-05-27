@@ -18,6 +18,7 @@ public class Constants {
         String ID = "id";
         String IS_QR = "isQR";
         String PLAN_STATUS = "planStatus";
+        String EQUIPMENT = "equipment";
     }
 
 }

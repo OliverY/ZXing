@@ -30,14 +30,4 @@
         android:layout_marginTop="50dp"
         android:text="登录"/>
 
-    <com.yuantu.zxing.common.widget.CircleProgressIndicator
-        android:id="@+id/circle_indicator"
-        android:layout_width="60dp"
-        android:layout_height="90dp" />
-
-    <com.yuantu.zxing.common.widget.LinearProgressIndicator
-        android:id="@+id/linear_indicator"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
 </LinearLayout>

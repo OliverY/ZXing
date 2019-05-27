@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/tv_stage_1"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:gravity="center"
+        android:textColor="@color/color_429FFF"
+        android:textSize="16sp"
+        android:text="模块安装"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@color/color_F4F4F4"/>
+
+    <TextView
+        android:id="@+id/tv_stage_2"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:gravity="center"
+        android:textColor="@color/black_333333"
+        android:textSize="16sp"
+        android:text="设备布线"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@color/color_F4F4F4"/>
+
+    <TextView
+        android:id="@+id/tv_stage_3"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:gravity="center"
+        android:textColor="@color/black_333333"
+        android:textSize="16sp"
+        android:text="设备测试"/>
+
+</LinearLayout>

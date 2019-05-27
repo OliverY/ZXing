@@ -8,7 +8,8 @@
         android:layout_height="210dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="14dp"
-        android:background="@color/colorAccent" />
+        android:src="@mipmap/home_top_bg"
+        android:background="@drawable/bg_home_top" />
 
     <Button
         android:id="@+id/btn_logging"

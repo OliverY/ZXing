@@ -1,7 +1,10 @@
 package com.yuantu.zxing.net;
 
+import com.yuantu.zxing.bean.ConfigBean;
+import com.yuantu.zxing.bean.EquipmentBean;
 import com.yuantu.zxing.bean.Product;
 import com.yuantu.zxing.bean.SchedulerBean;
+import com.yuantu.zxing.bean.SubmitBean;
 import com.yuantu.zxing.net.bean.ApiResponse;
 import com.yuantu.zxing.net.bean.ProductBean;
 import com.yuantu.zxing.net.bean.ProductDetail;
@@ -11,6 +14,8 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.functions.Function;
+import okhttp3.ResponseBody;
+import retrofit2.Response;
 
 /**
  * Author:  Yxj
@@ -53,4 +58,15 @@ public class ApiFactory {
         return getApiService().getProducePlanProcess(planStatus).map(new HttpResultFunc<List<SchedulerBean>>()).compose(SchedulerCompat.newThread());
     }
 
+    public static Observable<EquipmentBean> getDeviceInfoByScan(String barCode) {
+        return getApiService().getDeviceInfoByScan(barCode).map(new HttpResultFunc<EquipmentBean>()).compose(SchedulerCompat.newThread());
+    }
+
+    public static Observable<ApiResponse> loggingScheduler(SubmitBean submitBean) {
+        return getApiService().loggingScheduler(submitBean).compose(SchedulerCompat.newThread());
+    }
+
+    public static Observable<ConfigBean> getConfigInfo() {
+        return getApiService().getConfigInfo().map(new HttpResultFunc<ConfigBean>()).compose(SchedulerCompat.newThread());
+    }
 }

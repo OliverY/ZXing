@@ -54,24 +54,28 @@
                 android:paddingRight="14dp">
 
                 <com.yuantu.zxing.common.widget.CircleProgressIndicator
+                    android:id="@+id/circle_indicator_1"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_marginRight="30dp"
                     android:layout_height="match_parent" />
 
                 <com.yuantu.zxing.common.widget.CircleProgressIndicator
+                    android:id="@+id/circle_indicator_2"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_marginRight="30dp"
                     android:layout_height="match_parent" />
 
                 <com.yuantu.zxing.common.widget.CircleProgressIndicator
+                    android:id="@+id/circle_indicator_3"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_marginRight="30dp"
                     android:layout_height="match_parent" />
 
                 <com.yuantu.zxing.common.widget.CircleProgressIndicator
+                    android:id="@+id/circle_indicator_4"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent" />
@@ -94,6 +98,7 @@
                     android:text="进度"/>
 
                 <com.yuantu.zxing.common.widget.LinearProgressIndicator
+                    android:id="@+id/linea_indricator"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="14dp"

@@ -20,4 +20,8 @@ public class DisplayUtils {
         float density = context.getResources().getDisplayMetrics().density;
         return (int) (px/density+0.5f);
     }
+
+    public static int getScreenWidth(Context context){
+        return context.getResources().getDisplayMetrics().widthPixels;
+    }
 }

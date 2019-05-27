@@ -2,9 +2,14 @@ package com.yuantu.zxing.net;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.CookieJar;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -34,12 +39,13 @@ public class RetrofitClient {
 
     private OkHttpClient createOkHttpClient(){
         HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor();
-        logInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
+        logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         return new OkHttpClient.Builder()
                 .addNetworkInterceptor(logInterceptor)
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(10,TimeUnit.SECONDS)
+                .cookieJar(new PersistentCookieJar())
                 .build();
     }
 

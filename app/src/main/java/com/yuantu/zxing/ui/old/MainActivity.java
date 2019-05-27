@@ -75,7 +75,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 //        product.appendix.add("2-136-012-20180702-010");
 
         initview();
-        requestPermission();
     }
 
     private void initview() {
@@ -124,20 +123,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         addAdapter.setEmptyView(emptyView);
         ryAdd.setAdapter(addAdapter);
         addAdapter.setNewData(addedList);
-    }
-
-    private void requestPermission() {
-        new RxPermissions(this)
-                .request(Manifest.permission.CAMERA)
-                .subscribe(new Consumer<Boolean>() {
-                    @Override
-                    public void accept(Boolean aBoolean) throws Exception {
-                        if (!aBoolean) {
-                            finish();
-                        }
-                    }
-                });
-
     }
 
     @Override
