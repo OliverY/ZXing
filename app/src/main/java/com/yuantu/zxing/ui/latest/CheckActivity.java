@@ -49,7 +49,8 @@ public class CheckActivity extends BaseActivity {
 //        titles.add("已完成");
 //        titles.add("已取消");
 
-        List<ConfigBean.Config> configList = AppConfig.getInstance().getConfigBean().getTypeId_121();
+        List<ConfigBean.Config> configList = AppConfig.getInstance().getConfigBean().getTypeId_122();
+        configList.remove(configList.size()-1);
         List<Fragment> fragmentList = new ArrayList<>();
 
         for (int i = 0; i < configList.size(); i++) {
