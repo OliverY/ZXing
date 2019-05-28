@@ -36,6 +36,8 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
         setContentView(R.layout.activity_home);
 
+        setTitle("功能选择");
+
         findViewById(R.id.btn_old).setOnClickListener(this);
         findViewById(R.id.btn_new).setOnClickListener(this);
 

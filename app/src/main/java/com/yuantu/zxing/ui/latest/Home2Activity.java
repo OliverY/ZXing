@@ -39,6 +39,8 @@ public class Home2Activity extends BaseActivity implements View.OnClickListener 
 
         setContentView(R.layout.activity_home_2);
 
+        setTitle("新功能主页");
+
         findViewById(R.id.btn_logging).setOnClickListener(this);
         findViewById(R.id.btn_check).setOnClickListener(this);
     }

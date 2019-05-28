@@ -41,7 +41,7 @@ public class SchedulerBean {
     private String startTime;
     private String endTime;
     private String deviceTypeName;
-    private int progress;
+    private float progress;
     private String rate;
     private String deviceTypeDesc;
     private String planStatusDesc;
@@ -150,11 +150,11 @@ public class SchedulerBean {
         this.deviceTypeName = deviceTypeName;
     }
 
-    public int getProgress() {
+    public float getProgress() {
         return progress;
     }
 
-    public void setProgress(int progress) {
+    public void setProgress(float progress) {
         this.progress = progress;
     }
 

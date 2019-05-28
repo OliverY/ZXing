@@ -82,7 +82,7 @@ public class CircleProgressIndicator extends View {
         picPaint.setColor(getResources().getColor(picColor));
         RectF rectF = new RectF(padding, padding, mWidth - padding, mWidth - padding);
         float startAngle = 135;
-        sweepAngle = 150;
+//        sweepAngle = 150;
         canvas.drawArc(rectF, startAngle, sweepAngle, false, picPaint);
     }
 
@@ -96,7 +96,7 @@ public class CircleProgressIndicator extends View {
 
     public void setData(int max, int current,int color,String title) {
         this.currentIndex = current;
-        sweepAngle = (float) (Math.PI * 270f/180 * (current*1.0f/max));
+        sweepAngle = 270f * (current*1.0f/max);
         this.picColor = color;
         this.title = title;
         invalidate();

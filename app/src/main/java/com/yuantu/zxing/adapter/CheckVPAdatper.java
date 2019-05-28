@@ -37,10 +37,10 @@ public class CheckVPAdatper extends FragmentPagerAdapter {
         return fragmentList.get(position);
     }
 
-    @Override
-    public boolean isViewFromObject(View view, Object object) {
-        return view == object;
-    }
+//    @Override
+//    public boolean isViewFromObject(View view, Object object) {
+//        return view == object;
+//    }
 
     @Override
     public CharSequence getPageTitle(int position) {

@@ -25,7 +25,7 @@ public class LinearProgressIndicator extends View {
     private int mHeight;
     private int padding;
     private int index;
-    private int frontRight = 10;
+    private int frontRight;
 
     public LinearProgressIndicator(Context context) {
         this(context, null);
@@ -51,23 +51,16 @@ public class LinearProgressIndicator extends View {
         wordPaint.setTextAlign(Paint.Align.CENTER);
         wordPaint.setTextSize(DisplayUtils.dp2px(context, 13));
 
+        mHeight = DisplayUtils.dp2px(getContext(), 24);
+        padding = mHeight / 2;
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        drawBg(canvas);
-        drawFront(canvas);
-        drawIndex(canvas);
-
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
-
-        if (index < 10) {
-            frontRight = (int) (10 * 1.0f / 100 * (mWidth - 2 * padding) + padding);
+        if (index < 15) {
+            frontRight = (int) (15 * 1.0f / 100 * (mWidth - 2 * padding) + padding);
         } else {
             frontRight = (int) (index * 1.0f / 100 * (mWidth - 2 * padding) + padding);
         }
@@ -78,7 +71,15 @@ public class LinearProgressIndicator extends View {
             frontColor = R.color.color_FBDA59;
         }
 
-        invalidate();
+        drawBg(canvas);
+        drawFront(canvas);
+        drawIndex(canvas);
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+
+        postInvalidate();
     }
 
     private void drawBg(Canvas canvas) {
@@ -99,10 +100,7 @@ public class LinearProgressIndicator extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-        setMeasuredDimension(widthMeasureSpec, DisplayUtils.dp2px(getContext(), 24));
+        setMeasuredDimension(widthMeasureSpec, mHeight);
         mWidth = getMeasuredWidth();
-        mHeight = getMeasuredHeight();
-        padding = mHeight / 2;
     }
 }

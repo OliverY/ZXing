@@ -33,6 +33,8 @@ public class CheckActivity extends BaseActivity {
 
         setContentView(R.layout.activity_check);
 
+        setTitle("生产进度");
+
         tabLayout = findViewById(R.id.tab);
         viewPager = findViewById(R.id.view_pager);
 

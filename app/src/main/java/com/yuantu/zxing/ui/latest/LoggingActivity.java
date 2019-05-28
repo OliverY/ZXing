@@ -50,6 +50,8 @@ public class LoggingActivity extends BaseActivity implements View.OnClickListene
 
         setContentView(R.layout.activity_logging);
 
+        setTitle("登记进度");
+
         equipmentBean = (EquipmentBean) getIntent().getSerializableExtra(Constants.ActivityExtra.EQUIPMENT);
         stageList = AppConfig.getInstance().getConfigBean().getTypeId_123();
 
@@ -61,6 +63,7 @@ public class LoggingActivity extends BaseActivity implements View.OnClickListene
         btnSure = findViewById(R.id.btn_sure);
 
         tvStages.setOnClickListener(this);
+        btnSure.setOnClickListener(this);
 
         tvType.setText(equipmentBean.getDeviceTypeDesc());
         tvTypeCode.setText(equipmentBean.getDeviceTypeName());

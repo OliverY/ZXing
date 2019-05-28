@@ -39,6 +39,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
         setContentView(R.layout.activity_login);
 
+        setTitle("登录");
+
         etEmail = findViewById(R.id.et_email);
         etPwd = findViewById(R.id.et_password);
         btnLogin = findViewById(R.id.btn_login);
