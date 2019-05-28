@@ -21,4 +21,10 @@ public class Constants {
         String EQUIPMENT = "equipment";
     }
 
+    public interface SharedPreference{
+        String SP_NAME_USER = "user";
+        String EMAIL = "email";
+        String PASSWORD = "password";
+    }
+
 }

@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.yuantu.zxing.AppConfig;
+import com.yuantu.zxing.config.AppConfig;
 import com.yuantu.zxing.BaseActivity;
 import com.yuantu.zxing.Constants;
 import com.yuantu.zxing.R;

@@ -6,7 +6,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 
-import com.yuantu.zxing.AppConfig;
+import com.yuantu.zxing.config.AppConfig;
 import com.yuantu.zxing.BaseActivity;
 import com.yuantu.zxing.Constants;
 import com.yuantu.zxing.R;

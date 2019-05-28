@@ -1,5 +1,7 @@
 package com.yuantu.zxing.net;
 
+import android.content.Context;
+
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.io.IOException;
@@ -37,7 +39,7 @@ public class RetrofitClient {
         return Holder.instance;
     }
 
-    private OkHttpClient createOkHttpClient(){
+    private OkHttpClient createOkHttpClient(Context context){
         HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor();
         logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
@@ -45,13 +47,13 @@ public class RetrofitClient {
                 .addNetworkInterceptor(logInterceptor)
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(10,TimeUnit.SECONDS)
-                .cookieJar(new PersistentCookieJar())
+                .cookieJar(new CookieJarImpl(new PersistentCookieStore(context)))
                 .build();
     }
 
-    public void init(){
+    public void init(Context context){
         retrofit = new Retrofit.Builder()
-                .client(createOkHttpClient())
+                .client(createOkHttpClient(context))
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

@@ -4,14 +4,14 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.yuantu.zxing.BaseActivity;
 import com.yuantu.zxing.R;
-import com.yuantu.zxing.common.widget.CircleProgressIndicator;
-import com.yuantu.zxing.common.widget.LinearProgressIndicator;
+import com.yuantu.zxing.config.UserConfig;
 import com.yuantu.zxing.net.ApiFactory;
 import com.yuantu.zxing.net.bean.ApiResponse;
 import com.yuantu.zxing.utils.ProgressUtils;
@@ -42,6 +42,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         etEmail = findViewById(R.id.et_email);
         etPwd = findViewById(R.id.et_password);
         btnLogin = findViewById(R.id.btn_login);
+
+        if(TextUtils.isEmpty(UserConfig.getInstance().user.getEmail())){
+            etEmail.setText(UserConfig.getInstance().user.getEmail());
+        }
+        if(TextUtils.isEmpty(UserConfig.getInstance().user.getPassword())){
+            etPwd.setText(UserConfig.getInstance().user.getPassword());
+        }
 
         etEmail.setText("admin@yuantutech.com");
         etPwd.setText("admin");

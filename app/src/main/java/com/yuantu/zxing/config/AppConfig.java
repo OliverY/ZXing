@@ -1,4 +1,4 @@
-package com.yuantu.zxing;
+package com.yuantu.zxing.config;
 
 import com.yuantu.zxing.bean.ConfigBean;
 
@@ -6,7 +6,7 @@ import com.yuantu.zxing.bean.ConfigBean;
  * Author:  Yxj
  * Time:    2019/5/27 下午3:45
  * -----------------------------------------
- * Description:
+ * Description: 应用的配置信息，服务端传的，用于配置项
  */
 public class AppConfig {
 

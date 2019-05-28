@@ -12,10 +12,16 @@ import com.yuantu.zxing.net.RetrofitClient;
  */
 public class App extends Application {
 
+    public static App mInstance;
+
     @Override
     public void onCreate() {
         super.onCreate();
 
-        RetrofitClient.getInstance().init();
+        mInstance = this;
+
+        RetrofitClient.getInstance().init(getApplicationContext());
     }
+
+
 }

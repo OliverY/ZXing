@@ -5,26 +5,20 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 
 import com.tbruyelle.rxpermissions2.RxPermissions;
-import com.yuantu.zxing.AppConfig;
+import com.yuantu.zxing.config.AppConfig;
 import com.yuantu.zxing.BaseActivity;
 import com.yuantu.zxing.R;
 import com.yuantu.zxing.bean.ConfigBean;
 import com.yuantu.zxing.net.ApiFactory;
-import com.yuantu.zxing.net.bean.ApiResponse;
 import com.yuantu.zxing.ui.old.MainActivity;
 import com.yuantu.zxing.utils.ProgressUtils;
-
-import java.io.IOException;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import okhttp3.ResponseBody;
-import retrofit2.Response;
 
 /**
  * Author:  Yxj
