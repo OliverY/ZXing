@@ -1,4 +1,4 @@
-package com.yuantu.zxing.net;
+package com.yuantu.zxing.net.cookie;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

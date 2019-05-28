@@ -18,8 +18,6 @@
         <activity android:name=".ui.old.MainActivity">
         </activity>
         <activity android:name=".ui.old.ScanActivity" />
-        <activity android:name=".test.TestActivity" />
-        <activity android:name=".test.RyActivity" />
         <activity android:name=".ui.old.BindedActivity"/>
         <activity android:name=".ui.latest.LoginActivity">
             <intent-filter>
