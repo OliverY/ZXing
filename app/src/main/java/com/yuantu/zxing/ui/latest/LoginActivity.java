@@ -79,7 +79,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             public void onNext(ApiResponse apiResponse) {
                                 progressDialog.dismiss();
                                 if(apiResponse.isSuccess()){
-                                    startActivity(new Intent(LoginActivity.this,HomeActivity.class));
+//                                    startActivity(new Intent(LoginActivity.this,HomeActivity.class));
+                                    // 去新功能
+                                    startActivity(new Intent(LoginActivity.this,Home2Activity.class));
                                     finish();
                                 }else {
                                     ToastUtils.showShort(LoginActivity.this,"登录失败");

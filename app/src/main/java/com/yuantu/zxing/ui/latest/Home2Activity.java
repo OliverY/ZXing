@@ -1,5 +1,6 @@
 package com.yuantu.zxing.ui.latest;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,10 +10,13 @@ import android.view.View;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.yuantu.zxing.BaseActivity;
 import com.yuantu.zxing.Constants;
 import com.yuantu.zxing.R;
+import com.yuantu.zxing.bean.ConfigBean;
 import com.yuantu.zxing.bean.EquipmentBean;
+import com.yuantu.zxing.config.AppConfig;
 import com.yuantu.zxing.net.ApiFactory;
 import com.yuantu.zxing.ui.old.MainActivity;
 import com.yuantu.zxing.ui.old.ScanActivity;
@@ -22,6 +26,7 @@ import com.yuantu.zxing.utils.ToastUtils;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 /**
  * Author:  Yxj
@@ -32,6 +37,7 @@ import io.reactivex.disposables.Disposable;
 public class Home2Activity extends BaseActivity implements View.OnClickListener {
 
     private ProgressDialog progressDialog;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,10 +45,57 @@ public class Home2Activity extends BaseActivity implements View.OnClickListener 
 
         setContentView(R.layout.activity_home_2);
 
-        setTitle("新功能主页");
+        setTitle("功能主页");
 
         findViewById(R.id.btn_logging).setOnClickListener(this);
         findViewById(R.id.btn_check).setOnClickListener(this);
+        findViewById(R.id.btn_scan).setOnClickListener(this);
+
+        initConfigData();
+    }
+
+    private void initConfigData() {
+
+        dialog = ProgressUtils.show(this);
+        ApiFactory.getConfigInfo()
+                .subscribe(new Observer<ConfigBean>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(ConfigBean configBean) {
+                        dialog.dismiss();
+                        AppConfig.getInstance().setConfigBean(configBean);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+        requestPermission();
+    }
+
+    private void requestPermission() {
+        new RxPermissions(this)
+                .request(Manifest.permission.CAMERA)
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) throws Exception {
+                        if (!aBoolean) {
+                            finish();
+                        }
+                    }
+                });
+
     }
 
     @Override
@@ -67,6 +120,10 @@ public class Home2Activity extends BaseActivity implements View.OnClickListener 
                  */
                 Intent intent = new Intent(this,CheckActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.btn_scan:
+                // 老功能
+                startActivity(new Intent(this,MainActivity.class));
                 break;
         }
     }

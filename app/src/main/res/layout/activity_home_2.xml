@@ -12,18 +12,6 @@
         android:background="@drawable/bg_home_top" />
 
     <Button
-        android:id="@+id/btn_logging"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/btn_check"
-        android:layout_marginBottom="37dp"
-        android:layout_marginLeft="14dp"
-        android:layout_marginRight="14dp"
-        android:background="@drawable/bg_btn_logging"
-        android:text="录入进度"
-        android:textColor="@color/white" />
-
-    <Button
         android:id="@+id/btn_check"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,6 +21,30 @@
         android:layout_marginRight="14dp"
         android:background="@drawable/bg_btn_check"
         android:text="生产进度"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/btn_logging"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_check"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:background="@drawable/bg_btn_logging"
+        android:text="录入进度"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/btn_scan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_logging"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:background="@drawable/bg_btn_scan"
+        android:text="成品扫描"
         android:textColor="@color/white" />
 
 </RelativeLayout>

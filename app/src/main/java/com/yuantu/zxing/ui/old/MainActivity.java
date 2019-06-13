@@ -67,6 +67,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        setTitle("成品扫描");
+
         product = new Product();
 
 //        product.main = "2-136-001-20180702-002";
