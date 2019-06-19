@@ -38,5 +38,10 @@ public class UserConfig {
         return mInstance;
     }
 
+    public void saveConfig(String email,String password){
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(Constants.SharedPreference.EMAIL,email).commit();
+        editor.putString(Constants.SharedPreference.PASSWORD,password).commit();
+    }
 
 }

@@ -79,6 +79,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             public void onNext(ApiResponse apiResponse) {
                                 progressDialog.dismiss();
                                 if(apiResponse.isSuccess()){
+                                    UserConfig.getInstance().saveConfig(email,pwd);
+
 //                                    startActivity(new Intent(LoginActivity.this,HomeActivity.class));
                                     // 去新功能
                                     startActivity(new Intent(LoginActivity.this,Home2Activity.class));

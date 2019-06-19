@@ -8,8 +8,8 @@ package com.yuantu.zxing.net;
  */
 public class ApiConstants {
 
-//    public static final String BASE_URL = "http://10.10.11.154:8090";
-    public static final String BASE_URL = "http://47.99.141.133:8081";
+//    public static final String BASE_URL = "http://47.99.141.133:8081";// 测试环境
+    public static final String BASE_URL = "http://47.99.141.133:8083"; // 生产环境
 //    public static final String BASE_URL = "http://39.96.84.195";
 
     public static final String PHONE_LOGIN = BASE_URL + "/jszx/api/login";
