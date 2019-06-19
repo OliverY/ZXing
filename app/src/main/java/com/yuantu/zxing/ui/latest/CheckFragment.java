@@ -17,6 +17,7 @@ import com.yuantu.zxing.R;
 import com.yuantu.zxing.adapter.CheckListAdapter;
 import com.yuantu.zxing.bean.SchedulerBean;
 import com.yuantu.zxing.net.ApiFactory;
+import com.yuantu.zxing.net.bean.ApiResponse;
 import com.yuantu.zxing.utils.ToastUtils;
 
 import java.util.ArrayList;
@@ -68,6 +69,10 @@ public class CheckFragment extends Fragment {
                 requestData();
             }
         });
+
+        adapter.bindToRecyclerView(recyclerView);
+        adapter.setEmptyView(R.layout.empty_view);
+
         initData();
     }
 
@@ -79,17 +84,23 @@ public class CheckFragment extends Fragment {
 
     private void requestData() {
         ApiFactory.getProducePlanProcess(planStatus)
-                .subscribe(new Observer<List<SchedulerBean>>() {
+                .subscribe(new Observer<ApiResponse<List<SchedulerBean>>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(List<SchedulerBean> schedulerBeans) {
+                    public void onNext(ApiResponse<List<SchedulerBean>> apiResponse) {
                         refreshLayout.setRefreshing(false);
 
-                        adapter.setNewData(schedulerBeans);
+                        if(apiResponse.isSuccess()){
+                            List<SchedulerBean> schedulerBeans = apiResponse.getData();
+                            adapter.setNewData(schedulerBeans);
+                        }else{
+                            adapter.setNewData(null);
+                        }
+
                     }
 
                     @Override

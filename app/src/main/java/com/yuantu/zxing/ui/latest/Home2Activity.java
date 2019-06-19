@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -166,7 +167,8 @@ public class Home2Activity extends BaseActivity implements View.OnClickListener 
 
                     @Override
                     public void onError(Throwable e) {
-
+                        ToastUtils.showShort(Home2Activity.this,"网络访问错误");
+                        progressDialog.dismiss();
                     }
 
                     @Override

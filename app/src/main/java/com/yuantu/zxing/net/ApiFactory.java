@@ -54,8 +54,8 @@ public class ApiFactory {
         return getApiService().login(email,password).compose(SchedulerCompat.newThread());
     }
 
-    public static Observable<List<SchedulerBean>> getProducePlanProcess(int planStatus) {
-        return getApiService().getProducePlanProcess(planStatus).map(new HttpResultFunc<List<SchedulerBean>>()).compose(SchedulerCompat.newThread());
+    public static Observable<ApiResponse<List<SchedulerBean>>> getProducePlanProcess(int planStatus) {
+        return getApiService().getProducePlanProcess(planStatus).compose(SchedulerCompat.newThread());
     }
 
     public static Observable<EquipmentBean> getDeviceInfoByScan(String barCode) {
